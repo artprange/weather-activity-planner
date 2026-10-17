@@ -5,6 +5,7 @@ Record reasoning as it happens. Keep rejected options and scope cuts only when t
 ## 2026-10-17 — Initial planning
 
 Confirmed requirements:
+
 - Node.js and GraphQL backend; Open-Meteo data; four activities over seven days.
 - React/Vite/TypeScript frontend direction, with TanStack Router, shadcn/ui, Tailwind and Zod.
 - English default UI; accessible interactions; light and dark themes.
@@ -12,11 +13,13 @@ Confirmed requirements:
 - Plan first; proceed through numbered tasks using a guided workflow like fs-test.
 
 Proposals awaiting discussion:
+
 - One repository with separate web and API workspace applications.
 - Scores from 0 to 100 with category labels and explanations.
 - GraphQL Yoga and TanStack Query as optional additions; verify licenses when selecting dependencies.
 
 Open questions for B01:
+
 - Practitioner profile and the meaning of a comparable score across activities.
 - Daily scoring window, local timezone, whether today counts, and treatment of elapsed hours.
 - City coordinates versus nearby beaches/resorts; geographic applicability versus unavailable data.
@@ -45,6 +48,7 @@ The user approved the following rules after discussion. These supersede the init
 Each factor is bounded to 0–100. Interpolate linearly between the listed endpoints, remain at 100 across ideal plateaus, and clamp beyond outer limits. Weights sum to one. Apply hourly caps after weighting, before daily/window aggregation. Where multiple caps apply, use the lowest.
 
 Surf:
+
 - Significant wave height, 45%: 0 at <=0.2 m; 100 at 0.8–1.5 m; 0 at >=3 m.
 - Mean wave period, 30%: 0 at <=5 s; 100 at >=10 s.
 - Sustained wind, 15%: 100 at <=10 km/h; 0 at >=30 km/h.
@@ -53,6 +57,7 @@ Surf:
 - Tides and shore-relative wind direction excluded: no spot orientation/tidal suitability model. Marine wave heights are not breaking-wave heights.
 
 Ski:
+
 - Snow depth, 40%: 0 at 0 cm; 100 at >=50 cm. Convert API meters to centimeters.
 - Air temperature, 20%: 0 at <=-20 C; 100 at -8 to -1 C; 0 at >=5 C.
 - Sustained wind, 15%: 100 at <=15 km/h; 0 at >=50 km/h.
@@ -62,12 +67,14 @@ Ski:
 - No fresh-snow bonus. City snow depth does not prove resort conditions or opening status.
 
 Outdoor sightseeing:
+
 - Apparent temperature, 40%: 0 at <=0 C; 100 at 16–26 C; 0 at >=38 C.
 - Total precipitation, 40%: 100 at 0 mm/h; 0 at >=3 mm/h.
 - Sustained wind, 20%: 100 at <=15 km/h; 0 at >=45 km/h.
 - No cloud-cover penalty or separate precipitation-probability factor.
 
 Indoor sightseeing:
+
 - Start at 100 and subtract three bounded penalties.
 - Apparent temperature penalty: 0 at 10–30 C; 15 at <=-5 C or >=40 C, linear between endpoints.
 - Total precipitation penalty: 0 at 0 mm/h; 15 at >=3 mm/h.
@@ -117,4 +124,3 @@ Dependency references checked during discussion: GraphQL Yoga, TanStack Query an
 ## B04 — Guided setup started
 
 The user requested code/instructions, following the fs-test workflow. Application code is supplied in chat for the user to create; its execution is not assumed. Inspection found Node 22.23.2, npm 10.9.8 and nvm available. Instructions switch to the accepted Node 24 runtime before installing. B04 remains incomplete until setup and verification pass.
-

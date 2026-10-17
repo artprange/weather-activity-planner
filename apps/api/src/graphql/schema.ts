@@ -1,20 +1,20 @@
 import { createSchema } from 'graphql-yoga';
 
 const typeDefs = /* GraphQL */ `
-	type Query {
-		health: String!
-	}
+  type Query {
+    health: String!
+  }
 `;
 
 const resolvers = {
-	Query: {
-		health: (): string => 'ok',
-	},
+  Query: {
+    health: (): string => 'ok',
+  },
 };
 
 const schema = createSchema({
-	typeDefs,
-	resolvers,
+  typeDefs,
+  resolvers,
 });
 
 export { schema };

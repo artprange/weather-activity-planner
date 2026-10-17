@@ -24,4 +24,3 @@ This is a repository reference for all future JS/TS changes.
 - Validate external boundaries; do not treat TypeScript types as runtime validation.
 - Do not claim a UI library alone guarantees accessibility.
 - Additional fs-test conventions such as separate `styles.ts` files are not automatically adopted here; decide their fit with shadcn/ui before implementation.
-

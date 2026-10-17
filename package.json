@@ -1,18 +1,28 @@
 {
-	"name": "weather-activity-planner",
-	"version": "0.1.0",
-	"private": true,
-	"workspaces": [
-		"apps/api",
-		"apps/web"
-	],
-	"engines": {
-		"node": ">=24 <25"
-	},
-	"scripts": {
-		"dev:api": "npm run dev --workspace apps/api",
-		"dev:web": "npm run dev --workspace apps/web",
-		"build": "npm run build --workspaces",
-		"typecheck": "npm run typecheck --workspaces"
-	}
+  "name": "weather-activity-planner",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/api",
+    "apps/web"
+  ],
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "scripts": {
+    "dev:api": "npm run dev --workspace apps/api",
+    "dev:web": "npm run dev --workspace apps/web",
+    "build": "npm run build --workspaces",
+    "typecheck": "npm run typecheck --workspaces",
+    "lint": "npm run lint --workspaces",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "eslint-config-prettier": "10.1.8",
+    "prettier": "3.9.10"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true
+  }
 }

@@ -54,9 +54,11 @@ Dependencies: B02–B03.
 
 Acceptance: clean installation, both apps start, type/lint/build checks pass, and documented commands work. No database requirement.
 
-## B05 — Integrate Open-Meteo [TODO]
+## B05 — Integrate Open-Meteo [IN PROGRESS]
 
 Dependencies: B04; B01 variable requirements.
+
+B05.1: geocoding implemented; live success reported by the user. Automated failure-path checks added. Weather and marine adapters remain pending.
 
 - Implement geocoding, weather and marine adapters as needed.
 - Validate upstream payloads with Zod and normalize units, dates and timezones.

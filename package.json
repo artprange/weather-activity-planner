@@ -16,7 +16,8 @@
     "typecheck": "npm run typecheck --workspaces",
     "lint": "npm run lint --workspaces",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "test": "npm run test --workspace apps/api"
   },
   "devDependencies": {
     "eslint-config-prettier": "10.1.8",

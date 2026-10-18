@@ -124,3 +124,11 @@ Dependency references checked during discussion: GraphQL Yoga, TanStack Query an
 ## B04 — Guided setup started
 
 The user requested code/instructions, following the fs-test workflow. Application code is supplied in chat for the user to create; its execution is not assumed. Inspection found Node 22.23.2, npm 10.9.8 and nvm available. Instructions switch to the accepted Node 24 runtime before installing. B04 remains incomplete until setup and verification pass.
+
+## B05.1 - Geocoding verification
+
+- The user ran a live search for Santos and resolved ID 3449433 successfully. Homonymous places remained separate; Santos/SP coordinates and timezone matched the lookup.
+- Integration naming: GeocodedLocationType is the application model; OpenMeteoLocationResponseType is the validated upstream model; open-meteo-client.ts owns bounded HTTP/JSON requests. Empty lookup data is normalized to null in Zod to preserve type narrowing.
+- Added Vitest tests with simulated HTTP responses, including empty results, missing optional fields, invalid inputs, malformed coordinates/timezones/payloads, mismatched IDs, HTTP failures, network failures and request/body timeouts. No test calls the live API.
+- Fixed client constant/message typos and preserved the JSON parsing error as the cause. Tests live outside src and have a dedicated no-emit TypeScript configuration, keeping test code out of production output.
+- The B05 weather and marine integrations remain pending. The generated project PDF is a separate deliverable and is not part of the suggested geocoding commit. Commits remain user-owned.

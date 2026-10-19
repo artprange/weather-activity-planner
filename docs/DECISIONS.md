@@ -128,7 +128,11 @@ The user requested code/instructions, following the fs-test workflow. Applicatio
 ## B05.1 - Geocoding verification
 
 - The user ran a live search for Santos and resolved ID 3449433 successfully. Homonymous places remained separate; Santos/SP coordinates and timezone matched the lookup.
-- Integration naming: GeocodedLocationType is the application model; OpenMeteoLocationResponseType is the validated upstream model; open-meteo-client.ts owns bounded HTTP/JSON requests. Empty lookup data is normalized to null in Zod to preserve type narrowing.
+- Integration naming: GeocodedLocationType is the application model; OpenMeteoLocationResponseType is the validated upstream model; openMeteoClient.ts owns bounded HTTP/JSON requests. Empty lookup data is normalized to null in Zod to preserve type narrowing.
 - Added Vitest tests with simulated HTTP responses, including empty results, missing optional fields, invalid inputs, malformed coordinates/timezones/payloads, mismatched IDs, HTTP failures, network failures and request/body timeouts. No test calls the live API.
 - Fixed client constant/message typos and preserved the JSON parsing error as the cause. Tests live outside src and have a dedicated no-emit TypeScript configuration, keeping test code out of production output.
 - The B05 weather and marine integrations remain pending. The generated project PDF is a separate deliverable and is not part of the suggested geocoding commit. Commits remain user-owned.
+
+## 2026-10-19 - File naming convention
+
+The user requested camelCase for project-owned filenames that do not require kebab-case. Renamed source, test and generator files; updated imports, test mocks, package scripts and code-generation mappers. React components retain PascalCase; tool-defined filenames, URL routes and existing directories are preserved. Existing uncommitted B07 changes are retained. No commit is created by this migration.

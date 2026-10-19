@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { ApplicationErrorCodeEnum } from '../src/errors/application-error.js';
-import { fetchOpenMeteoJson } from '../src/integrations/open-meteo/open-meteo-client.js';
+import { ApplicationErrorCodeEnum } from '../src/errors/applicationError.js';
+import { fetchOpenMeteoJson } from '../src/integrations/open-meteo/openMeteoClient.js';
 
 const fetchMock = vi.fn<typeof fetch>();
 const requestUrl = new URL(

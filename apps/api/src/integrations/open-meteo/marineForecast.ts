@@ -1,17 +1,17 @@
 import {
   ApplicationError,
   ApplicationErrorCodeEnum,
-} from '../../errors/application-error.js';
+} from '../../errors/applicationError.js';
 import { MarineCoverageEnum } from '../../forecasts/forecast.types.js';
 import type {
   ForecastWindowType,
   MarineForecastType,
 } from '../../forecasts/forecast.types.js';
-import type { GeocodedLocationType } from '../../locations/geocoded-location.types.js';
-import { createForecastUrl, getGridDistanceKm } from './forecast-helper.js';
-import { marineForecastResponseSchema } from './forecast-schemas.js';
+import type { GeocodedLocationType } from '../../locations/geocodedLocation.types.js';
+import { createForecastUrl, getGridDistanceKm } from './forecastHelper.js';
+import { marineForecastResponseSchema } from './forecastSchemas.js';
 
-import { fetchOpenMeteoJson } from './open-meteo-client.js';
+import { fetchOpenMeteoJson } from './openMeteoClient.js';
 
 const MarineForecastConstants = {
   BASE_URL: 'https://marine-api.open-meteo.com',

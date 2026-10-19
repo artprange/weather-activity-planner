@@ -3,15 +3,15 @@ import { z } from 'zod';
 import {
   ApplicationError,
   ApplicationErrorCodeEnum,
-} from '../../errors/application-error.js';
-import type { GeocodedLocationType } from '../../locations/geocoded-location.types.js';
+} from '../../errors/applicationError.js';
+import type { GeocodedLocationType } from '../../locations/geocodedLocation.types.js';
 
 import {
   openMeteoLocationLookupResponseSchema,
   openMeteoLocationSearchResponseSchema,
 } from './geocoding.schemas.js';
 import type { OpenMeteoLocationResponseType } from './geocoding.schemas.js';
-import { fetchOpenMeteoJson } from './open-meteo-client.js';
+import { fetchOpenMeteoJson } from './openMeteoClient.js';
 
 const GeocodingConstants = {
   BASE_URL: 'https://geocoding-api.open-meteo.com',

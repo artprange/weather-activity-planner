@@ -3,6 +3,7 @@ import { createServer } from 'node:http';
 import { createYoga } from 'graphql-yoga';
 import { z } from 'zod';
 
+import { createGraphQLContext } from './graphql/context.js';
 import { schema } from './graphql/schema.js';
 
 const ServerConstants = {
@@ -24,14 +25,18 @@ const environment = environmentSchema.parse(process.env);
 
 const yoga = createYoga({
   schema,
+  context: createGraphQLContext,
   graphqlEndpoint: ServerConstants.GRAPHQL_ENDPOINT,
   cors: false,
+  maskedErrors: {
+    isDev: false,
+  },
 });
 
 const server = createServer(yoga);
 
 server.on('error', (error: Error): void => {
-  console.error('Failed to start API server', error);
+  console.error('Failed to start API server.', error);
   process.exitCode = 1;
 });
 

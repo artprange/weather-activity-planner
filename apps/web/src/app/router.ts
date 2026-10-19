@@ -5,7 +5,7 @@ import {
 } from '@tanstack/react-router';
 
 import { HomePage } from '@/App';
-import { AppLayout } from '@/app/app-layout';
+import { AppLayout } from '@/app/AppLayout';
 import { AppRoutes } from '@/app/routes';
 
 const rootRoute = createRootRoute({

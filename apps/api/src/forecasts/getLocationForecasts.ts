@@ -1,7 +1,7 @@
-import { createForecastWindow } from '../integrations/open-meteo/forecast-helper.js';
-import { getMarineForecast } from '../integrations/open-meteo/marine-forecast.js';
-import { getWeatherForecast } from '../integrations/open-meteo/weather-forecast.js';
-import type { GeocodedLocationType } from '../locations/geocoded-location.types.js';
+import { createForecastWindow } from '../integrations/open-meteo/forecastHelper.js';
+import { getMarineForecast } from '../integrations/open-meteo/marineForecast.js';
+import { getWeatherForecast } from '../integrations/open-meteo/weatherForecast.js';
+import type { GeocodedLocationType } from '../locations/geocodedLocation.types.js';
 
 async function getLocationForecasts(
   location: GeocodedLocationType,

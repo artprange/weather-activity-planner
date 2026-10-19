@@ -1,7 +1,7 @@
 # Project backlog
 
 Status: TODO, IN DISCUSSION, READY, IN PROGRESS, DONE.
-B01–B08 are DONE. B09 is IN PROGRESS through guided instructions; forecast UI implementation and browser acceptance checks remain pending.
+B01–B09 are DONE. B10 is IN PROGRESS through guided instructions; theme implementation and browser acceptance checks remain pending.
 Task order is the suggested execution order; acceptance requires evidence, not only code presence.
 
 ## Working process
@@ -102,9 +102,11 @@ User verified single selection, arrow-key navigation, empty input, no matches, A
 
 Acceptance: a user can find and select an unambiguous place using keyboard alone; status changes are announced without excessive repetition.
 
-## B09 — Implement seven-day activity results [IN PROGRESS]
+## B09 — Implement seven-day activity results [DONE]
 
 Dependencies: B08.
+
+The user confirmed URL restoration and the listed B09 browser/code checks, then reported B09 completion after collapsible activity sections and score colors were added. Final integrated accessibility coverage remains part of B11.
 
 - Display scores and ranking for all four activities, dates and local context.
 - Persist the selected placeId in validated route search parameters; restore the canonical place through activityForecast on refresh and browser history changes.
@@ -113,7 +115,7 @@ Dependencies: B08.
 
 Acceptance: users can identify favorable days per activity and understand why; partial results remain useful; backend scores are displayed without client-side recalculation.
 
-## B10 — Implement and verify light/dark themes [TODO]
+## B10 — Implement and verify light/dark themes [IN PROGRESS]
 
 Dependencies: B03–B04; verify completed screens after B09.
 
@@ -152,6 +154,6 @@ Database, authentication, favorites, resort/beach catalogs, maps, advanced chart
 
 ## Next step
 
-Implement B09 through the guided workflow: validated forecast responses, placeId URL state, destination-local dates/times, chronological assessments with backend ranking, expandable factors/limits, partial results and source attribution. Verify restoration, history, unavailable scores and narrow screens before marking complete.
+Implement B10 through the guided workflow: native System/Light/Dark selection, saved preference, early HTML initialization and live system-theme updates. Verify refresh, keyboard interaction, blocked storage, focus, inputs, errors and score readability in both themes before marking complete.
 
 Completion evidence for B04–B07: user-reported live integration checks and completed commits/merges; the latest repository verification passed 99 API tests, formatting, lint, type checking and both builds. B08 browser behavior and code checks were subsequently confirmed by the user. Manual screen-reader verification remains pending in B11.

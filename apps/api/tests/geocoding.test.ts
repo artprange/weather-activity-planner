@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { ApplicationErrorCodeEnum } from '../src/errors/application-error.js';
+import { ApplicationErrorCodeEnum } from '../src/errors/applicationError.js';
 import {
   getGeocodedLocationById,
   searchGeocodedLocations,

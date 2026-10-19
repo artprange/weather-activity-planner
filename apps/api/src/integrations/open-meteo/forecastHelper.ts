@@ -3,12 +3,12 @@ import { z } from 'zod';
 import {
   ApplicationError,
   ApplicationErrorCodeEnum,
-} from '../../errors/application-error.js';
+} from '../../errors/applicationError.js';
 import type {
   ForecastWindowType,
   ForecastGridType,
 } from '../../forecasts/forecast.types.js';
-import type { GeocodedLocationType } from '../../locations/geocoded-location.types.js';
+import type { GeocodedLocationType } from '../../locations/geocodedLocation.types.js';
 
 const ForecastConstants = {
   DAYS: 7,

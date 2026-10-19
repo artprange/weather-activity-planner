@@ -1,15 +1,15 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { ApplicationErrorCodeEnum } from '../src/errors/application-error.js';
+import { ApplicationErrorCodeEnum } from '../src/errors/applicationError.js';
 import { MarineCoverageEnum } from '../src/forecasts/forecast.types.js';
-import { getLocationForecasts } from '../src/forecasts/get-location-forecasts.js';
+import { getLocationForecasts } from '../src/forecasts/getLocationForecasts.js';
 
-import { getMarineForecast } from '../src/integrations/open-meteo/marine-forecast.js';
-import { getWeatherForecast } from '../src/integrations/open-meteo/weather-forecast.js';
-import type { GeocodedLocationType } from '../src/locations/geocoded-location.types.js';
+import { getMarineForecast } from '../src/integrations/open-meteo/marineForecast.js';
+import { getWeatherForecast } from '../src/integrations/open-meteo/weatherForecast.js';
+import type { GeocodedLocationType } from '../src/locations/geocodedLocation.types.js';
 
 import { GeocodingFixtures } from './fixtures/geocoding.js';
-import { createForecastWindow } from '../src/integrations/open-meteo/forecast-helper.js';
+import { createForecastWindow } from '../src/integrations/open-meteo/forecastHelper.js';
 
 const location: GeocodedLocationType = {
   id: '3449433',

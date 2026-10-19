@@ -9,8 +9,8 @@ import type {
   MarineForecastType,
 } from '../src/forecasts/forecast.types.js';
 
-import { assessActivities } from '../src/scoring/assess-activities.js';
-import { scoreHour, getSuitability } from '../src/scoring/score-hour.js';
+import { assessActivities } from '../src/scoring/assessActivities.js';
+import { scoreHour, getSuitability } from '../src/scoring/scoreHour.js';
 import {
   ActivityEnum,
   AssessmentStatusEnum,

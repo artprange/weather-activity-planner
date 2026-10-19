@@ -24,3 +24,10 @@ This is a repository reference for all future JS/TS changes.
 - Validate external boundaries; do not treat TypeScript types as runtime validation.
 - Do not claim a UI library alone guarantees accessibility.
 - Additional fs-test conventions such as separate `styles.ts` files are not automatically adopted here; decide their fit with shadcn/ui before implementation.
+
+## File naming
+
+- User-owned service, utility, type, schema and test filenames use camelCase (for example `getActivityForecast.ts`, `activityForecast.types.ts` and `openMeteoClient.test.ts`).
+- React component filenames use PascalCase, such as `AppLayout.tsx`.
+- Keep tool-defined names such as `package.json`, `package-lock.json`, `eslint.config.js`, `tsconfig.json`, `.env.example` and generated filenames.
+- URL route paths remain kebab-case. Directory names are unchanged by this file-naming migration.

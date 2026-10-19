@@ -1,7 +1,7 @@
 import {
   ApplicationError,
   ApplicationErrorCodeEnum,
-} from '../../errors/application-error.js';
+} from '../../errors/applicationError.js';
 
 const OpenMeteoClientConstants = {
   TIMEOUT_MS: 8_000,

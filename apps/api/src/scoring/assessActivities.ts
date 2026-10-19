@@ -15,7 +15,7 @@ import type {
   AvailableAssessmentType,
   UnavailableAssessmentType,
 } from './scoring.types.js';
-import { scoreHour, getSuitability } from './score-hour.js';
+import { scoreHour, getSuitability } from './scoreHour.js';
 
 const ScoringConstants = {
   HOUR_MS: 3_600_000,

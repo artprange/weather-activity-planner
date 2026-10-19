@@ -1,16 +1,16 @@
 import {
   ApplicationError,
   ApplicationErrorCodeEnum,
-} from '../../errors/application-error.js';
+} from '../../errors/applicationError.js';
 import type {
   ForecastWindowType,
   WeatherForecastType,
 } from '../../forecasts/forecast.types.js';
-import type { GeocodedLocationType } from '../../locations/geocoded-location.types.js';
-import { createForecastUrl, toTimestampMs } from './forecast-helper.js';
-import { weatherForecastResponseSchema } from './forecast-schemas.js';
+import type { GeocodedLocationType } from '../../locations/geocodedLocation.types.js';
+import { createForecastUrl, toTimestampMs } from './forecastHelper.js';
+import { weatherForecastResponseSchema } from './forecastSchemas.js';
 
-import { fetchOpenMeteoJson } from './open-meteo-client.js';
+import { fetchOpenMeteoJson } from './openMeteoClient.js';
 
 const WeatherForecastConstants = {
   BASE_URL: 'https://api.open-meteo.com',

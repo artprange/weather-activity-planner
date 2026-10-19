@@ -1,3 +1,4 @@
+import { ThemeSwitcher } from '@/features/theme/themeSwitcher';
 import { Outlet } from '@tanstack/react-router';
 
 function AppLayout() {
@@ -11,8 +12,9 @@ function AppLayout() {
       </a>
 
       <header className="border-b border-border">
-        <div className="mx-auto max-w-6xl px-4 py-5">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-5">
           <p className="font-semibold">Weather Activity Planner</p>
+          <ThemeSwitcher />
         </div>
       </header>
 

@@ -156,3 +156,9 @@ After reporting passing B09 checks, the user requested less scrolling and explic
 ## 2026-10-19 — Score colors
 
 The user requested colored scores. Display the backend category using semantic theme tokens: Poor/red, Fair/amber, Good/green and Excellent/blue. Keep the numeric score and English category visible, with unavailable assessments styled neutrally. Add a decorative bar using the backend score directly; hide the redundant bar from assistive technology. Define explicit light/dark foreground/background pairs and verify their text contrast numerically. No thresholds, categories or scores are recalculated in the frontend.
+
+## 2026-10-19 — B10 guided implementation
+
+The user confirmed B09 completion and requested B10 code in chat. Use a labeled native System/Light/Dark select without a new dependency or a global provider for the single header control. Follow live system changes only for System; persist explicit choices in localStorage and synchronize other tabs through storage events. Storage failure leaves the current tab usable. Apply a validated preference through an inline head script before React loads, setting the dark class and color-scheme to reduce an incorrect first paint. The tiny initialization script intentionally mirrors the storage key, accepted values and media query from the TypeScript helpers because it runs before module loading.
+
+When editing the existing layout, migrate it to AppLayout/index.tsx to follow the user's component convention. Strengthen input boundaries and the light-theme focus-ring token so their contrast is at least 3:1 against the existing background and card colors. Theme UI and helpers are supplied in chat; browser and screen-reader coverage is not assumed.

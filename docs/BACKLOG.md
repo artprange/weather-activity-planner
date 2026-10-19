@@ -1,7 +1,7 @@
 # Project backlog
 
 Status: TODO, IN DISCUSSION, READY, IN PROGRESS, DONE.
-B01–B03 are DONE. B04 is IN PROGRESS through guided instructions; application files and checks are not yet complete.
+B01–B07 are DONE. B08 is IN PROGRESS through guided instructions; frontend implementation and browser acceptance checks remain pending.
 Task order is the suggested execution order; acceptance requires evidence, not only code presence.
 
 ## Working process
@@ -44,7 +44,7 @@ Dependencies: B01–B02.
 
 Acceptance: a reviewable screen/state outline covering keyboard navigation, text alternatives to color and both themes. Decide if i18n is needed; multiple languages are outside the initial scope.
 
-## B04 — Set up project foundations [IN PROGRESS]
+## B04 — Set up project foundations [DONE]
 
 Dependencies: B02–B03.
 
@@ -54,11 +54,11 @@ Dependencies: B02–B03.
 
 Acceptance: clean installation, both apps start, type/lint/build checks pass, and documented commands work. No database requirement.
 
-## B05 — Integrate Open-Meteo [IN PROGRESS]
+## B05 — Integrate Open-Meteo [DONE]
 
 Dependencies: B04; B01 variable requirements.
 
-B05.1: geocoding implemented; live success reported by the user. Automated failure-path checks added. Weather and marine adapters remain pending.
+Geocoding, weather and marine adapters implemented and verified. The user reported successful live Santos queries, 168-hour weather/marine coverage and passing automated checks.
 
 - Implement geocoding, weather and marine adapters as needed.
 - Validate upstream payloads with Zod and normalize units, dates and timezones.
@@ -67,7 +67,7 @@ B05.1: geocoding implemented; live success reported by the user. Automated failu
 
 Acceptance: recorded representative payloads/fixtures; duplicate place names remain selectable; missing marine data does not discard usable weather results; external requests have bounded duration.
 
-## B06 — Implement scoring engine [TODO]
+## B06 — Implement scoring engine [DONE]
 
 Dependencies: B01, B05.
 
@@ -78,7 +78,7 @@ Dependencies: B01, B05.
 
 Acceptance: worked B01 examples match results; scores are finite and within range; missing data remains distinguishable from poor conditions.
 
-## B07 — Expose GraphQL service [TODO]
+## B07 — Expose GraphQL service [DONE]
 
 Dependencies: B02, B05–B06.
 
@@ -89,12 +89,13 @@ Dependencies: B02, B05–B06.
 
 Acceptance: agreed contract can be exercised end to end; only the backend calculates scores.
 
-## B08 — Implement place search [TODO]
+## B08 — Implement place search [IN PROGRESS]
 
 Dependencies: B03–B04, B07.
 
 - Build labeled search and accessible place selection with country/region context.
-- Integrate query state and URL state where agreed; prevent stale responses from replacing the selected place.
+- Integrate TanStack Query with explicit form submission, following B03; prevent stale responses from replacing the selected place.
+- Keep candidate selection in page state for B08. Add placeId URL persistence and canonical-place restoration with forecast loading in B09.
 - Cover initial, loading, no-results, error and retry behavior.
 
 Acceptance: a user can find and select an unambiguous place using keyboard alone; status changes are announced without excessive repetition.
@@ -148,4 +149,6 @@ Database, authentication, favorites, resort/beach catalogs, maps, advanced chart
 
 ## Next step
 
-Complete B04 incrementally: first workspaces, Vite and the minimal GraphQL server; then Router/Query, UI tooling, lint/format and environment configuration. Verify commands against user-created files before marking complete.
+Implement B08 through the guided workflow: generated frontend contract types, validated GraphQL transport, explicit place search and accessible candidate selection. Verify keyboard interaction and initial/loading/empty/error/retry states before marking complete.
+
+Completion evidence for B04–B07: user-reported live integration checks and completed commits/merges; the latest repository verification passed 99 API tests, formatting, lint, type checking and both builds. This does not claim frontend browser or screen-reader acceptance for B08.

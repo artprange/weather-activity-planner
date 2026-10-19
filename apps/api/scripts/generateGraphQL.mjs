@@ -1,4 +1,4 @@
-import { writeFile } from 'node:fs/promises';
+import { mkdir, writeFile } from 'node:fs/promises';
 
 import { codegen } from '@graphql-codegen/core';
 import * as typescript from '@graphql-codegen/typescript';
@@ -46,3 +46,20 @@ await writeFile(
   new URL('../src/graphql/generated.ts', import.meta.url),
   output,
 );
+
+const webOutput = await codegen({
+  filename: 'generated.ts',
+  schema: parse(typeDefs),
+  documents: [],
+  plugins: [{ typescript: {} }],
+  pluginMap: { typescript },
+  config: {
+    useTypeImports: true,
+    enumsAsTypes: true,
+  },
+});
+
+const webDirectory = new URL('../../web/src/graphql/', import.meta.url);
+
+await mkdir(webDirectory, { recursive: true });
+await writeFile(new URL('generated.ts', webDirectory), webOutput);

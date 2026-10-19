@@ -136,3 +136,9 @@ The user requested code/instructions, following the fs-test workflow. Applicatio
 ## 2026-10-19 - File naming convention
 
 The user requested camelCase for project-owned filenames that do not require kebab-case. Renamed source, test and generator files; updated imports, test mocks, package scripts and code-generation mappers. React components retain PascalCase; tool-defined filenames, URL routes and existing directories are preserved. Existing uncommitted B07 changes are retained. No commit is created by this migration.
+
+## 2026-10-19 — B08 guided implementation
+
+The user confirmed B07 completion and requested the next implementation as code in chat, with each file path given before its contents. Backlog statuses now reflect B04–B07 completion and B08 in progress.
+
+Follow B03's explicit search submission rather than the assistant's later debounce suggestion. Use native radio controls for candidate selection and TanStack Query cancellation/cache isolation for requests. Generate frontend contract types from the existing SDL and validate HTTP responses with Zod; no additional runtime dependency is needed. Candidate selection remains in page state in B08; URL placeId persistence and canonical restoration are deferred to B09 alongside forecast loading. These are implementation choices for the guided B08 delivery; browser and assistive-technology verification remain pending.

@@ -19,7 +19,7 @@ const GeocodingConstants = {
   LOOKUP_PATH: '/v1/get',
   LANGUAGE: 'en',
   RESULT_LIMIT: 10,
-  MIN_QUERY_LENGTH: 2,
+  MIN_QUERY_LENGTH: 3,
   MAX_QUERY_LENGTH: 100,
 };
 
@@ -65,7 +65,7 @@ async function searchGeocodedLocations(
   if (!input.success) {
     throw new ApplicationError(
       ApplicationErrorCodeEnum.INVALID_INPUT,
-      'Enter a place name between 2 and 100 characters.',
+      'Enter a place name between 3 and 100 characters.',
     );
   }
 

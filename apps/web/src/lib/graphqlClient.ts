@@ -17,7 +17,7 @@ async function requestGraphQL<T>(
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ query, variables }),
-    signal: AbortSignal.any([signal, AbortSignal.timeout(12_000)]),
+    signal: AbortSignal.any([signal, AbortSignal.timeout(20_000)]),
   });
 
   if (!response.ok) {

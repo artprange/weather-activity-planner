@@ -6,6 +6,15 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --color-score-poor: var(--score-poor);
+  --color-score-poor-foreground: var(--score-poor-foreground);
+  --color-score-fair: var(--score-fair);
+  --color-score-fair-foreground: var(--score-fair-foreground);
+  --color-score-good: var(--score-good);
+  --color-score-good-foreground: var(--score-good-foreground);
+  --color-score-excellent: var(--score-excellent);
+  --color-score-excellent-foreground: var(--score-excellent-foreground);
+
   --font-heading: var(--font-sans);
   --font-sans: 'Geist Variable', sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
@@ -49,6 +58,15 @@
 }
 
 :root {
+  --score-poor: #fef2f2;
+  --score-poor-foreground: #991b1b;
+  --score-fair: #fffbeb;
+  --score-fair-foreground: #92400e;
+  --score-good: #ecfdf5;
+  --score-good-foreground: #065f46;
+  --score-excellent: #eff6ff;
+  --score-excellent-foreground: #1e40af;
+
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -84,6 +102,15 @@
 }
 
 .dark {
+  --score-poor: #450a0a;
+  --score-poor-foreground: #fecaca;
+  --score-fair: #451a03;
+  --score-fair-foreground: #fde68a;
+  --score-good: #022c22;
+  --score-good-foreground: #a7f3d0;
+  --score-excellent: #172554;
+  --score-excellent-foreground: #bfdbfe;
+
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);

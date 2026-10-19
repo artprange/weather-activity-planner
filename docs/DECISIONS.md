@@ -142,3 +142,17 @@ The user requested camelCase for project-owned filenames that do not require keb
 The user confirmed B07 completion and requested the next implementation as code in chat, with each file path given before its contents. Backlog statuses now reflect B04–B07 completion and B08 in progress.
 
 Follow B03's explicit search submission rather than the assistant's later debounce suggestion. Use native radio controls for candidate selection and TanStack Query cancellation/cache isolation for requests. Generate frontend contract types from the existing SDL and validate HTTP responses with Zod; no additional runtime dependency is needed. Candidate selection remains in page state in B08; URL placeId persistence and canonical restoration are deferred to B09 alongside forecast loading. These are implementation choices for the guided B08 delivery; browser and assistive-technology verification remain pending.
+
+## 2026-10-19 — B08 acceptance and B09 guided implementation
+
+The user confirmed B08 single selection, arrow-key navigation, input validation, no matches, API failure/retry and passing code checks. B08 is complete; manual screen-reader verification remains part of B11. React components follow the user's PascalCase-directory/index.tsx convention.
+
+B09 code is supplied in chat for the user to implement. Persist placeId through TanStack Router search state and restore canonical place details through activityForecast. Display chronological days with backend-provided ranks and highlight rank 1 without implying favorable conditions. Format calendar dates without browser-timezone shifts and evaluation times in the destination timezone. Keep null scores unavailable, preserve partial activities, expose factor averages/negative indoor contributions and scoring limits, and show source attribution. Increase GraphQL transport timeout to 20 seconds to cover sequential 8-second geocoding and 8-second forecast stages. No frontend scoring or ranking calculation is introduced. Browser acceptance remains pending.
+
+## 2026-10-19 — Collapsible activity forecasts
+
+After reporting passing B09 checks, the user requested less scrolling and explicitly authorized direct code edits. Each activity now uses native details/summary, starts collapsed and can be opened independently. Native disclosure markers and visible keyboard focus indicate interaction; daily factors/limitations remain nested disclosures. Changing the selected destination resets activity disclosures through destination-specific React keys. No activity is hidden based on city name or inferred venue availability. Browser keyboard and screen-reader verification of this presentation change remains pending.
+
+## 2026-10-19 — Score colors
+
+The user requested colored scores. Display the backend category using semantic theme tokens: Poor/red, Fair/amber, Good/green and Excellent/blue. Keep the numeric score and English category visible, with unavailable assessments styled neutrally. Add a decorative bar using the backend score directly; hide the redundant bar from assistive technology. Define explicit light/dark foreground/background pairs and verify their text contrast numerically. No thresholds, categories or scores are recalculated in the frontend.

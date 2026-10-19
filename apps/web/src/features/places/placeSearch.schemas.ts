@@ -21,5 +21,5 @@ const searchPlacesDataSchema = z.object({
 
 type SearchPlaceType = z.infer<typeof searchPlaceSchema>;
 
-export { placeSearchInputSchema, searchPlacesDataSchema };
+export { placeSearchInputSchema, searchPlaceSchema, searchPlacesDataSchema };
 export type { SearchPlaceType };

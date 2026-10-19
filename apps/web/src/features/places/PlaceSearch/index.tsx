@@ -3,14 +3,20 @@ import { useId, useState, type SubmitEvent } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 import { Button } from '@/components/ui/button';
+import { PlaceSearchResults } from '@/features/places/PlaceSearchResults';
+import { searchPlacesOptions } from '@/features/places/placeSearch.queries';
 import {
   placeSearchInputSchema,
   type SearchPlaceType,
-} from '../placeSearch.schemas';
-import { searchPlacesOptions } from '../placeSearch.queries';
-import { PlaceSearchResults } from '../PlaceSearchResults';
+} from '@/features/places/placeSearch.schemas';
 
-function PlaceSearch() {
+type PlaceSearchProps = {
+  selectedPlaceId: string | null;
+  onSelect: (place: SearchPlaceType) => void;
+  onClear: () => void;
+};
+
+function PlaceSearch({ selectedPlaceId, onSelect, onClear }: PlaceSearchProps) {
   const inputId = useId();
   const helpId = useId();
   const errorId = useId();
@@ -18,9 +24,6 @@ function PlaceSearch() {
   const [input, setInput] = useState('');
   const [submittedQuery, setSubmittedQuery] = useState('');
   const [validationError, setValidationError] = useState<string | null>(null);
-  const [selectedPlace, setSelectedPlace] = useState<SearchPlaceType | null>(
-    null,
-  );
 
   const searchQuery = useQuery(searchPlacesOptions(submittedQuery));
   const places = searchQuery.data?.searchPlaces;
@@ -43,7 +46,7 @@ function PlaceSearch() {
       return;
     }
 
-    setSelectedPlace(null);
+    onClear();
     setSubmittedQuery(result.data);
   }
 
@@ -124,33 +127,10 @@ function PlaceSearch() {
       {places !== undefined && places.length > 0 && (
         <PlaceSearchResults
           places={places}
-          selectedPlaceId={selectedPlace?.id ?? null}
-          onSelect={setSelectedPlace}
+          selectedPlaceId={selectedPlaceId}
+          onSelect={onSelect}
         />
       )}
-
-      <div role="status" aria-atomic="true">
-        {selectedPlace !== null && (
-          <section
-            aria-labelledby="selected-place-title"
-            className="space-y-2 rounded-xl border border-border bg-card p-5 text-card-foreground"
-          >
-            <h2 id="selected-place-title" className="font-semibold">
-              Selected location
-            </h2>
-
-            <p>
-              {[selectedPlace.name, selectedPlace.region, selectedPlace.country]
-                .filter((part) => part !== null && part !== '')
-                .join(', ')}
-            </p>
-
-            <p className="text-sm text-muted-foreground">
-              Time zone: {selectedPlace.timezone}
-            </p>
-          </section>
-        )}
-      </div>
     </div>
   );
 }

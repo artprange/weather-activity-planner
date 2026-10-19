@@ -28,6 +28,6 @@ This is a repository reference for all future JS/TS changes.
 ## File naming
 
 - User-owned service, utility, type, schema and test filenames use camelCase (for example `getActivityForecast.ts`, `activityForecast.types.ts` and `openMeteoClient.test.ts`).
-- React component filenames use PascalCase, such as `AppLayout.tsx`.
+- New React components use a PascalCase directory containing `index.tsx`, such as `PlaceSearch/index.tsx`, as requested by the user. Existing entry points and components can be migrated when touched; shadcn-generated UI files retain their tool convention.
 - Keep tool-defined names such as `package.json`, `package-lock.json`, `eslint.config.js`, `tsconfig.json`, `.env.example` and generated filenames.
 - URL route paths remain kebab-case. Directory names are unchanged by this file-naming migration.

@@ -6,6 +6,7 @@ import {
 
 import { HomePage } from '@/App';
 import { AppLayout } from '@/app/AppLayout';
+import { homeSearchSchema } from '@/app/homeSearch';
 import { AppRoutes } from '@/app/routes';
 
 const rootRoute = createRootRoute({
@@ -15,6 +16,7 @@ const rootRoute = createRootRoute({
 const homeRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: AppRoutes.HOME,
+  validateSearch: (search) => homeSearchSchema.parse(search),
   component: HomePage,
 });
 

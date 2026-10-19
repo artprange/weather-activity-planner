@@ -1,7 +1,7 @@
 # Project backlog
 
 Status: TODO, IN DISCUSSION, READY, IN PROGRESS, DONE.
-B01–B07 are DONE. B08 is IN PROGRESS through guided instructions; frontend implementation and browser acceptance checks remain pending.
+B01–B08 are DONE. B09 is IN PROGRESS through guided instructions; forecast UI implementation and browser acceptance checks remain pending.
 Task order is the suggested execution order; acceptance requires evidence, not only code presence.
 
 ## Working process
@@ -89,9 +89,11 @@ Dependencies: B02, B05–B06.
 
 Acceptance: agreed contract can be exercised end to end; only the backend calculates scores.
 
-## B08 — Implement place search [IN PROGRESS]
+## B08 — Implement place search [DONE]
 
 Dependencies: B03–B04, B07.
+
+User verified single selection, arrow-key navigation, empty input, no matches, API errors, retry and passing code checks. Manual screen-reader verification remains tracked in B11.
 
 - Build labeled search and accessible place selection with country/region context.
 - Integrate TanStack Query with explicit form submission, following B03; prevent stale responses from replacing the selected place.
@@ -100,11 +102,12 @@ Dependencies: B03–B04, B07.
 
 Acceptance: a user can find and select an unambiguous place using keyboard alone; status changes are announced without excessive repetition.
 
-## B09 — Implement seven-day activity results [TODO]
+## B09 — Implement seven-day activity results [IN PROGRESS]
 
 Dependencies: B08.
 
 - Display scores and ranking for all four activities, dates and local context.
+- Persist the selected placeId in validated route search parameters; restore the canonical place through activityForecast on refresh and browser history changes.
 - Explain contributing factors, unavailable states and relevant limitations.
 - Keep information readable on narrow screens and available without relying on charts, hover or color alone.
 
@@ -149,6 +152,6 @@ Database, authentication, favorites, resort/beach catalogs, maps, advanced chart
 
 ## Next step
 
-Implement B08 through the guided workflow: generated frontend contract types, validated GraphQL transport, explicit place search and accessible candidate selection. Verify keyboard interaction and initial/loading/empty/error/retry states before marking complete.
+Implement B09 through the guided workflow: validated forecast responses, placeId URL state, destination-local dates/times, chronological assessments with backend ranking, expandable factors/limits, partial results and source attribution. Verify restoration, history, unavailable scores and narrow screens before marking complete.
 
-Completion evidence for B04–B07: user-reported live integration checks and completed commits/merges; the latest repository verification passed 99 API tests, formatting, lint, type checking and both builds. This does not claim frontend browser or screen-reader acceptance for B08.
+Completion evidence for B04–B07: user-reported live integration checks and completed commits/merges; the latest repository verification passed 99 API tests, formatting, lint, type checking and both builds. B08 browser behavior and code checks were subsequently confirmed by the user. Manual screen-reader verification remains pending in B11.

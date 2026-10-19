@@ -63,7 +63,7 @@ function DailyAssessmentCard({ day, timezone }: DailyAssessmentCardProps) {
             </div>
           </div>
         ) : (
-          <p className="inline-flex rounded-lg bg-muted px-3 py-2 font-medium text-muted-foreground">
+          <p className="inline-flex rounded-lg bg-muted px-3 py-2 font-medium text-foreground">
             Score unavailable
           </p>
         )}

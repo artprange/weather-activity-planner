@@ -11,3 +11,6 @@ coverage/
 .DS_Store
 AGENTS.md
 .vitest/
+
+playwright-report/
+test-results/

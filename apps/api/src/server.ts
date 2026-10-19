@@ -1,10 +1,8 @@
 import { createServer } from 'node:http';
 
-import { createYoga } from 'graphql-yoga';
 import { z } from 'zod';
 
-import { createGraphQLContext } from './graphql/context.js';
-import { schema } from './graphql/schema.js';
+import { yoga } from './graphql/yoga.js';
 
 const ServerConstants = {
   DEFAULT_PORT: 4000,
@@ -22,16 +20,6 @@ const environmentSchema = z.object({
 });
 
 const environment = environmentSchema.parse(process.env);
-
-const yoga = createYoga({
-  schema,
-  context: createGraphQLContext,
-  graphqlEndpoint: ServerConstants.GRAPHQL_ENDPOINT,
-  cors: false,
-  maskedErrors: {
-    isDev: false,
-  },
-});
 
 const server = createServer(yoga);
 

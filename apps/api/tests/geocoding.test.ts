@@ -100,7 +100,16 @@ describe('searchGeocodedLocations', () => {
     ]);
   });
 
-  it.each(['', ' ', 'S', 'a'.repeat(101)])(
+  it('accepts three characters after trimming', async () => {
+    fetchMock.mockResolvedValueOnce(Response.json({ results: [] }));
+
+    await expect(searchGeocodedLocations('  Rio  ')).resolves.toEqual([]);
+
+    const [url] = fetchMock.mock.calls[0] ?? [];
+    expect(String(url)).toContain('name=Rio');
+  });
+
+  it.each(['', ' ', 'S', 'Sa', ' Sa ', 'a'.repeat(101)])(
     'rejects invalid query before HTTP: %j',
     async (query) => {
       await expect(searchGeocodedLocations(query)).rejects.toMatchObject({

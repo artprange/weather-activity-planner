@@ -162,3 +162,15 @@ The user requested colored scores. Display the backend category using semantic t
 The user confirmed B09 completion and requested B10 code in chat. Use a labeled native System/Light/Dark select without a new dependency or a global provider for the single header control. Follow live system changes only for System; persist explicit choices in localStorage and synchronize other tabs through storage events. Storage failure leaves the current tab usable. Apply a validated preference through an inline head script before React loads, setting the dark class and color-scheme to reduce an incorrect first paint. The tiny initialization script intentionally mirrors the storage key, accepted values and media query from the TypeScript helpers because it runs before module loading.
 
 When editing the existing layout, migrate it to AppLayout/index.tsx to follow the user's component convention. Strengthen input boundaries and the light-theme focus-ring token so their contrast is at least 3:1 against the existing background and card colors. Theme UI and helpers are supplied in chat; browser and screen-reader coverage is not assumed.
+
+## 2026-10-19 — Scrollable place candidates
+
+Before B11, the user requested a bounded candidate list to reduce page scrolling. Limit the list to the smaller of 28rem and 60svh, showing roughly three to four ordinary cards while allowing long names and zoom to increase individual card height. Use native vertical scrolling and radio controls; keep the legend outside the scroll area and include inner padding for visible focus outlines. Reserve scrollbar space to avoid horizontal shifts. No additional tab stop or custom arrow-key handling is introduced.
+
+## 2026-10-19 — Collapsible location selection
+
+The user requested a disclosure for location candidates after selection. Wrap the existing bounded list in native details/summary and keep a selected-place label visible in the summary. Pointer selection collapses the list and moves focus to the summary so focus does not remain in hidden content. Keyboard radio selection intentionally stays open to preserve arrow-key comparison; the summary remains the native keyboard toggle. Every valid search submission, including repeating the same term, remounts the disclosure open. Keep the radio group's accessible legend inside the disclosure.
+
+## 2026-10-19 — Search validation on submission
+
+The user requested removal of the persistent character-count/region/country instruction and a validation message only after submitting fewer than three characters. Require 3–100 characters after trimming in both frontend and API. Frontend schema messages distinguish too-short and too-long input; display the message in the existing live error region and associate it with the input only when invalid. Query enablement reuses the same input schema. Backend boundary checks cover two-character rejection and three-character acceptance.

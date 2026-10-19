@@ -2,7 +2,11 @@ import { z } from 'zod';
 
 import type { Query } from '@/graphql/generated';
 
-const placeSearchInputSchema = z.string().trim().min(2).max(100);
+const placeSearchInputSchema = z
+  .string()
+  .trim()
+  .min(3, 'Enter at least 3 characters.')
+  .max(100, 'Use no more than 100 characters.');
 
 const searchPlaceSchema = z.object({
   id: z.string().regex(/^[1-9]\d*$/),

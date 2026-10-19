@@ -2,7 +2,10 @@ import { queryOptions } from '@tanstack/react-query';
 
 import { requestGraphQL } from '@/lib/graphqlClient';
 
-import { searchPlacesDataSchema } from './placeSearch.schemas';
+import {
+  placeSearchInputSchema,
+  searchPlacesDataSchema,
+} from './placeSearch.schemas';
 
 const searchPlacesDocument = /* GraphQL */ `
   query SearchPlaces($query: String!) {
@@ -29,7 +32,7 @@ function searchPlacesOptions(query: string) {
         searchPlacesDataSchema,
         signal,
       ),
-    enabled: query.length >= 2,
+    enabled: placeSearchInputSchema.safeParse(query).success,
     retry: false,
     staleTime: 5 * 60_000,
   });

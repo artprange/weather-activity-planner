@@ -18,11 +18,11 @@ type PlaceSearchProps = {
 
 function PlaceSearch({ selectedPlaceId, onSelect, onClear }: PlaceSearchProps) {
   const inputId = useId();
-  const helpId = useId();
   const errorId = useId();
 
   const [input, setInput] = useState('');
   const [submittedQuery, setSubmittedQuery] = useState('');
+  const [searchAttempt, setSearchAttempt] = useState(0);
   const [validationError, setValidationError] = useState<string | null>(null);
 
   const searchQuery = useQuery(searchPlacesOptions(submittedQuery));
@@ -34,12 +34,15 @@ function PlaceSearch({ selectedPlaceId, onSelect, onClear }: PlaceSearchProps) {
     const result = placeSearchInputSchema.safeParse(input);
 
     if (!result.success) {
-      setValidationError('Enter a place name between 2 and 100 characters.');
+      setValidationError(
+        result.error.issues[0]?.message ?? 'Enter a valid place name.',
+      );
       return;
     }
 
     setValidationError(null);
     setInput(result.data);
+    setSearchAttempt((attempt) => attempt + 1);
 
     if (result.data === submittedQuery) {
       void searchQuery.refetch();
@@ -72,11 +75,6 @@ function PlaceSearch({ selectedPlaceId, onSelect, onClear }: PlaceSearchProps) {
           City or town
         </label>
 
-        <p id={helpId} className="text-sm text-muted-foreground">
-          Enter 2 to 100 characters. You can choose the region and country from
-          the results.
-        </p>
-
         <div className="flex flex-col gap-3 sm:flex-row">
           <input
             id={inputId}
@@ -88,7 +86,7 @@ function PlaceSearch({ selectedPlaceId, onSelect, onClear }: PlaceSearchProps) {
               setValidationError(null);
             }}
             aria-invalid={validationError !== null}
-            aria-describedby={`${helpId} ${errorId}`}
+            aria-describedby={validationError === null ? undefined : errorId}
             autoComplete="off"
             className="min-h-11 min-w-0 flex-1 rounded-lg border border-input bg-background px-3 text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
           />
@@ -126,6 +124,7 @@ function PlaceSearch({ selectedPlaceId, onSelect, onClear }: PlaceSearchProps) {
 
       {places !== undefined && places.length > 0 && (
         <PlaceSearchResults
+          key={`${submittedQuery}-${searchAttempt}`}
           places={places}
           selectedPlaceId={selectedPlaceId}
           onSelect={onSelect}

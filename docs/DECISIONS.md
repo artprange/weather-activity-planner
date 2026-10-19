@@ -174,3 +174,9 @@ The user requested a disclosure for location candidates after selection. Wrap th
 ## 2026-10-19 — Search validation on submission
 
 The user requested removal of the persistent character-count/region/country instruction and a validation message only after submitting fewer than three characters. Require 3–100 characters after trimming in both frontend and API. Frontend schema messages distinguish too-short and too-long input; display the message in the existing live error region and associate it with the input only when invalid. Query enablement reuses the same input schema. Backend boundary checks cover two-character rejection and three-character acceptance.
+
+## 2026-10-19 — B11 browser and accessibility verification
+
+The user requested B11. Created test/accessibility-integration without committing and added development-only Playwright/axe coverage with deterministic GraphQL responses and the existing backend scoring engine. Tested keyboard/focus, disclosure scrolling, unavailable vs zero, partial data, retry, stale forecasts, URL restoration/history, themes and narrow reflow. axe found a real light-theme unavailable-badge contrast defect (4.34:1); normal foreground on the neutral badge fixes it.
+
+Separate HTTP/UI fixture tests from live upstream and actual assistive-technology checks. A new search adds an unselected history state; test back/forward between selections without inventing a different history model. Browser tests verify B10. B11 remains in progress pending manual spoken-output and actual zoom checks in B11_VERIFICATION.md. npm audit reported the existing shadcn/braces chain; no compatible patch was published in the queried registry and no forced major downgrade was applied.

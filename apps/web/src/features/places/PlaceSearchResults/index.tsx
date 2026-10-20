@@ -23,6 +23,16 @@ function PlaceSearchResults({
           .filter((part) => part !== null && part !== '')
           .join(', ');
 
+  const closeResults = () => {
+    setIsOpen(false);
+    summaryRef.current?.focus({ preventScroll: true });
+  };
+
+  const handleSelect = (place: SearchPlaceType) => {
+    onSelect(place);
+    closeResults();
+  };
+
   return (
     <details
       open={isOpen}
@@ -31,7 +41,7 @@ function PlaceSearchResults({
     >
       <summary
         ref={summaryRef}
-        className="cursor-pointer rounded-xl px-4 py-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+        className="cursor-pointer rounded-xl px-4 py-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring hover:bg-accent hover:text-accent-foreground"
       >
         <span className="font-semibold">Choose a location</span>
         {selectedLabel !== null && (
@@ -43,7 +53,7 @@ function PlaceSearchResults({
 
       <fieldset className="min-w-0 px-3 pb-3">
         <legend className="sr-only">Location options</legend>
-        <ul className="max-h-[min(28rem,60svh)] space-y-3 overflow-y-auto overscroll-y-contain p-1 [scrollbar-gutter:stable]">
+        <ul className="max-h-[min(28rem,60svh)] space-y-3 overflow-y-auto overscroll-y-contain p-1 scrollbar-gutter:stable">
           {places.map((place) => (
             <li key={place.id}>
               <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-border bg-card p-4 text-card-foreground focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-ring">
@@ -52,11 +62,10 @@ function PlaceSearchResults({
                   name={groupId}
                   value={place.id}
                   checked={selectedPlaceId === place.id}
-                  onChange={() => onSelect(place)}
-                  onClick={(event) => {
-                    if (event.detail > 0) {
-                      setIsOpen(false);
-                      summaryRef.current?.focus();
+                  onChange={() => handleSelect(place)}
+                  onClick={() => {
+                    if (selectedPlaceId === place.id) {
+                      closeResults();
                     }
                   }}
                   className="mt-1 size-4 shrink-0 accent-primary"

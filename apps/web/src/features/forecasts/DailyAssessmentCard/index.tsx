@@ -43,7 +43,7 @@ function DailyAssessmentCard({ day, timezone }: DailyAssessmentCardProps) {
   return (
     <article
       aria-labelledby={titleId}
-      className="h-full space-y-4 rounded-xl border border-border bg-card p-5 text-card-foreground"
+      className="h-full min-w-0 space-y-4 rounded-xl border border-border bg-card p-5 text-card-foreground"
     >
       <h3 id={titleId} className="font-semibold">
         <time dateTime={day.date}>{formatForecastDate(day.date)}</time>
@@ -106,75 +106,88 @@ function DailyAssessmentCard({ day, timezone }: DailyAssessmentCardProps) {
         </p>
       )}
 
-      <section className="space-y-4" aria-label="Conditions explained">
-        <h4 className="font-semibold">What shapes this day</h4>
+      <details className="rounded-xl border border-border">
+        <summary className="cursor-pointer rounded-xl p-4 font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring hover:bg-accent hover:text-accent-foreground">
+          What shapes this day
+        </summary>
 
-        {day.factors.length > 0 && (
-          <>
-            <p className="text-sm text-muted-foreground">
-              Averages cover the evaluated period. Hourly score limits and
-              rounding can affect the final score.
-              {day.activity === 'INDOOR_SIGHTSEEING' &&
-                ' Indoor contributions are deductions from 100.'}
-            </p>
+        <div className="space-y-4 px-4 pb-4">
+          {day.factors.length > 0 && (
+            <>
+              <p className="text-sm text-muted-foreground">
+                Averages cover the evaluated period. Hourly score limits and
+                rounding can affect the final score.
+                {day.activity === 'INDOOR_SIGHTSEEING' &&
+                  ' Indoor contributions are deductions from 100.'}
+              </p>
+              <p className="text-xs text-muted-foreground sm:hidden">
+                Swipe to explore weather factors.
+              </p>
 
-            <dl className="grid gap-3 text-sm sm:grid-cols-2 xl:grid-cols-3">
-              {day.factors.map((factor) => (
-                <div
-                  key={factor.factor}
-                  className="space-y-2 rounded-xl border bg-muted/20 p-4"
-                >
-                  <dt className="font-medium">{FactorLabels[factor.factor]}</dt>
+              <dl
+                aria-label="Weather factors"
+                tabIndex={0}
+                className="flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain pb-3 text-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring sm:grid sm:grid-cols-2 sm:overflow-visible sm:pb-0 xl:grid-cols-3"
+              >
+                {day.factors.map((factor) => (
+                  <div
+                    key={factor.factor}
+                    className="w-[85%] shrink-0 snap-start space-y-2 rounded-xl border bg-muted/20 p-4 sm:w-auto sm:min-w-0"
+                  >
+                    <dt className="font-medium">
+                      {FactorLabels[factor.factor]}
+                    </dt>
 
-                  <dd className="text-xl font-semibold">
-                    {' '}
-                    {numberFormatter.format(factor.meanValue)} {factor.unit}
-                  </dd>
+                    <dd className="text-xl font-semibold">
+                      {' '}
+                      {numberFormatter.format(factor.meanValue)} {factor.unit}
+                    </dd>
 
-                  <dd className="text-muted-foreground">
-                    Weather suitability:{' '}
-                    {numberFormatter.format(factor.meanScore)}/100
-                  </dd>
+                    <dd className="text-muted-foreground">
+                      Weather suitability:{' '}
+                      {numberFormatter.format(factor.meanScore)}/100
+                    </dd>
 
-                  <dd>
-                    {day.activity === 'INDOOR_SIGHTSEEING'
-                      ? 'Average deduction:'
-                      : 'Average contribution:'}{' '}
-                    {numberFormatter.format(factor.meanPoints)} points
-                  </dd>
-                  <dd className="text-muted-foreground">
-                    {FactorDescriptions[factor.factor]}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </>
-        )}
+                    <dd>
+                      {day.activity === 'INDOOR_SIGHTSEEING'
+                        ? 'Average deduction:'
+                        : 'Average contribution:'}{' '}
+                      {numberFormatter.format(factor.meanPoints)} points
+                    </dd>
+                    <dd className="text-muted-foreground">
+                      {FactorDescriptions[factor.factor]}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </>
+          )}
 
-        {day.caps.length > 0 && (
-          <div className="rounded-xl border bg-muted/30 p-4">
-            <h4 className="font-semibold">Conditions affecting the score</h4>
+          {day.caps.length > 0 && (
+            <div className="rounded-xl border bg-muted/30 p-4">
+              <h4 className="font-semibold">Conditions affecting the score</h4>
 
-            <ul className="list-disc space-y-1 pl-5 text-sm">
-              {day.caps.map((cap) => (
-                <li key={cap}>{CapLabels[cap]}</li>
-              ))}
-            </ul>
-          </div>
-        )}
+              <ul className="list-disc space-y-1 pl-5 text-sm">
+                {day.caps.map((cap) => (
+                  <li key={cap}>{CapLabels[cap]}</li>
+                ))}
+              </ul>
+            </div>
+          )}
 
-        {day.limitations.length > 0 && (
-          <div className="rounded-xl border bg-muted/30 p-4">
-            <h4 className="font-semibold">Before you plan</h4>
+          {day.limitations.length > 0 && (
+            <div className="rounded-xl border bg-muted/30 p-4">
+              <h4 className="font-semibold">Before you plan</h4>
 
-            <ul className="list-disc space-y-1 pl-5 text-sm">
-              {day.limitations.map((limitation) => (
-                <li key={limitation}>{limitation}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </section>
+              <ul className="list-disc space-y-1 pl-5 text-sm">
+                {day.limitations.map((limitation) => (
+                  <li key={limitation}>{limitation}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      </details>
     </article>
   );
 }

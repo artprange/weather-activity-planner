@@ -24,21 +24,24 @@ for (const theme of ['light', 'dark'] as const) {
       'Outdoor sightseeing',
       'Indoor sightseeing',
     ]) {
-      await activityGroup(page, name).locator('summary').first().click();
+      const tab = page.getByRole('tab', { name: new RegExp(`^${name}`) });
+      if ((await tab.getAttribute('aria-disabled')) !== 'true')
+        await tab.click();
     }
-    await page.locator('article details').evaluateAll((elements) => {
-      for (const element of elements)
-        if (element instanceof HTMLDetailsElement) element.open = true;
-    });
+    await page
+      .getByRole('tab', { name: 'Outdoor sightseeing', exact: true })
+      .click();
     await expect(
-      activityGroup(page, 'Outdoor sightseeing').getByText('Good', {
-        exact: true,
-      }),
+      activityGroup(page, 'Outdoor sightseeing')
+        .getByRole('group', { name: 'Forecast days' })
+        .getByText('Good', { exact: true })
+        .first(),
     ).toBeVisible();
     await expect(
-      activityGroup(page, 'Outdoor sightseeing').getByText('Fair', {
-        exact: true,
-      }),
+      activityGroup(page, 'Outdoor sightseeing')
+        .getByRole('group', { name: 'Forecast days' })
+        .getByText('Fair', { exact: true })
+        .first(),
     ).toBeVisible();
     await testInfo.attach('expanded-forecast', {
       body: await page.screenshot(),
@@ -95,12 +98,9 @@ test('reflows at 320 CSS pixels with reduced motion and expanded details', async
     'Outdoor sightseeing',
     'Indoor sightseeing',
   ]) {
-    await activityGroup(page, name).locator('summary').first().click();
+    const tab = page.getByRole('tab', { name: new RegExp(`^${name}`) });
+    if ((await tab.getAttribute('aria-disabled')) !== 'true') await tab.click();
   }
-  await page.locator('article details').evaluateAll((elements) => {
-    for (const element of elements)
-      if (element instanceof HTMLDetailsElement) element.open = true;
-  });
   const widths = await page.evaluate(() => ({
     content: document.documentElement.scrollWidth,
     viewport: window.innerWidth,

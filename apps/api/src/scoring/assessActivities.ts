@@ -41,6 +41,8 @@ const StatusMessages: Record<
     'No suitable evaluation time window is available.',
   [AssessmentStatusEnum.LOCATION_UNSUPPORTED]:
     'The marine grid is outside the supported distance.',
+  [AssessmentStatusEnum.NO_NEARBY_COAST]:
+    'No nearby ocean coastline was found for this location. Try a coastal destination.',
   [AssessmentStatusEnum.UPSTREAM_UNAVAILABLE]:
     'The required forecast service is unavailable.',
 };
@@ -284,6 +286,13 @@ function assessActivities(
 
   return Object.values(ActivityEnum).map((activity) => {
     const days: DailyAssessmentType[] = input.window.dates.map((date) => {
+      if (activity === ActivityEnum.SURFING && input.hasNearbyCoast === false) {
+        return unavailable(
+          date,
+          activity,
+          AssessmentStatusEnum.NO_NEARBY_COAST,
+        );
+      }
       if (weather === null) {
         return unavailable(
           date,

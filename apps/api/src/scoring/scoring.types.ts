@@ -23,6 +23,7 @@ enum AssessmentStatusEnum {
   INSUFFICIENT_DATA = 'INSUFFICIENT_DATA',
   NO_VALID_WINDOW = 'NO_VALID_WINDOW',
   LOCATION_UNSUPPORTED = 'LOCATION_UNSUPPORTED',
+  NO_NEARBY_COAST = 'NO_NEARBY_COAST',
   UPSTREAM_UNAVAILABLE = 'UPSTREAM_UNAVAILABLE',
 }
 
@@ -114,6 +115,7 @@ type ForecastSourceType<T> =
     };
 
 type ActivityScoringInputType = {
+  hasNearbyCoast?: boolean;
   timezone: string;
   window: ForecastWindowType;
   weatherResult: ForecastSourceType<WeatherForecastType>;

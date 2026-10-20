@@ -36,6 +36,7 @@ export type AssessmentStatusEnum =
   | 'INSUFFICIENT_DATA'
   | 'NO_VALID_WINDOW'
   | 'LOCATION_UNSUPPORTED'
+  | 'NO_NEARBY_COAST'
   | 'UPSTREAM_UNAVAILABLE';
 
 export type ScoringFactorEnum =

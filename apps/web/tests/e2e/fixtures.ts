@@ -1,6 +1,8 @@
 import type { Page } from '@playwright/test';
 import { z } from 'zod';
 
+import { MarineCoverageEnum } from '../../../api/src/forecasts/forecast.types';
+import { hasNearbyCoast } from '../../../api/src/locations/coastalProximity';
 import { assessActivities } from '../../../api/src/scoring/assessActivities';
 import {
   createLocationForecastFixture,
@@ -10,7 +12,13 @@ import type { ActivityForecast, Place } from '../../src/graphql/generated';
 
 const Places: Place[] = [
   ForecastPlaceFixture,
-  { ...ForecastPlaceFixture, id: '3448439', name: 'São Paulo' },
+  {
+    ...ForecastPlaceFixture,
+    id: '3448439',
+    name: 'São Paulo',
+    latitude: -23.55,
+    longitude: -46.64,
+  },
   ...Array.from({ length: 8 }, (_, index) => ({
     ...ForecastPlaceFixture,
     id: String(10000 + index),
@@ -31,20 +39,37 @@ type MockOptionsType = {
   forecastFailures?: number;
   empty?: boolean;
   partial?: boolean;
+  snowDepthCm?: number;
+  waveHeightM?: number;
+  outsideMarineCoverage?: boolean;
 };
 
-function createForecast(place: Place, partial = false): ActivityForecast {
+function createForecast(
+  place: Place,
+  partial = false,
+  conditions: MockOptionsType = {},
+): ActivityForecast {
   const fixture = createLocationForecastFixture();
   if (partial)
     fixture.marineResult = {
       status: 'rejected',
       reason: new Error('Marine offline'),
     };
+  if (fixture.marineResult.status === 'fulfilled') {
+    if (conditions.outsideMarineCoverage)
+      fixture.marineResult.value.coverage = MarineCoverageEnum.OUTSIDE_RANGE;
+    for (const hour of fixture.marineResult.value.hours) {
+      if (conditions.waveHeightM !== undefined)
+        hour.waveHeightM = conditions.waveHeightM;
+    }
+  }
   if (fixture.weatherResult.status === 'fulfilled') {
     const firstHour = fixture.weatherResult.value.hours[0];
     if (firstHour === undefined)
       throw new Error('Forecast fixture has no hours.');
     for (const hour of fixture.weatherResult.value.hours) {
+      if (conditions.snowDepthCm !== undefined)
+        hour.snowDepthCm = conditions.snowDepthCm;
       const dayIndex = Math.floor(
         (hour.timestampMs - firstHour.timestampMs) / 86_400_000,
       );
@@ -52,7 +77,11 @@ function createForecast(place: Place, partial = false): ActivityForecast {
       if (dayIndex === 1) hour.precipitationMm = 1.5;
     }
   }
-  const activities = assessActivities({ ...fixture, timezone: place.timezone });
+  const activities = assessActivities({
+    ...fixture,
+    timezone: place.timezone,
+    hasNearbyCoast: hasNearbyCoast(place),
+  });
 
   return {
     place,
@@ -110,7 +139,9 @@ async function mockGraphQL(
       json: {
         data: {
           activityForecast:
-            place === undefined ? null : createForecast(place, options.partial),
+            place === undefined
+              ? null
+              : createForecast(place, options.partial, options),
         },
       },
     });
@@ -125,9 +156,7 @@ async function searchPlaces(page: Page, query = 'Santos'): Promise<void> {
 }
 
 function activityGroup(page: Page, name: string) {
-  return page
-    .locator('details')
-    .filter({ has: page.getByRole('heading', { name, exact: true }) });
+  return page.getByRole('tabpanel', { name, exact: true });
 }
 
 export { Places, createForecast, mockGraphQL, searchPlaces, activityGroup };

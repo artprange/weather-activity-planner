@@ -3,6 +3,7 @@ import {
   ApplicationErrorCodeEnum,
 } from '../errors/applicationError.js';
 import { getGeocodedLocationById } from '../integrations/open-meteo/geocoding.js';
+import { hasNearbyCoast } from '../locations/coastalProximity.js';
 import { assessActivities } from '../scoring/assessActivities.js';
 
 import type { ActivityForecastType } from './activityForecast.types.js';
@@ -51,9 +52,11 @@ async function getActivityForecast(
     window: forecasts.window,
     activities: assessActivities({
       timezone: place.timezone,
+      hasNearbyCoast: hasNearbyCoast(place),
       ...forecasts,
     }),
     attributions: [
+      { label: 'Natural Earth', url: 'https://www.naturalearthdata.com/' },
       {
         label: 'Open-Meteo',
         url: 'https://open-meteo.com/',

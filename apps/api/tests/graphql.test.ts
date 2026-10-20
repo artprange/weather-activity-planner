@@ -473,3 +473,40 @@ describe('GraphQL contract', () => {
     expect(JSON.stringify(result)).not.toContain('PRIVATE');
   });
 });
+
+describe('geographic surf applicability', () => {
+  it('returns NO_NEARBY_COAST for São Paulo even if marine data is missing', async () => {
+    vi.mocked(getGeocodedLocationById).mockResolvedValue({
+      ...ForecastPlaceFixture,
+      id: '3448439',
+      name: 'São Paulo',
+      latitude: -23.55,
+      longitude: -46.64,
+    });
+    const fixture = createLocationForecastFixture();
+    fixture.marineResult = {
+      status: 'rejected',
+      reason: new Error('Marine unavailable'),
+    };
+    vi.mocked(getLocationForecasts).mockResolvedValue(fixture);
+    expect(await request(forecastQuery, { id: '3448439' })).toMatchObject({
+      data: {
+        activityForecast: {
+          place: { name: 'São Paulo' },
+          activities: expect.arrayContaining([
+            {
+              activity: 'SURFING',
+              days: expect.arrayContaining([
+                expect.objectContaining({
+                  status: 'NO_NEARBY_COAST',
+                  score: null,
+                  rank: null,
+                }),
+              ]),
+            },
+          ]),
+        },
+      },
+    });
+  });
+});

@@ -18,6 +18,7 @@ const StatusLabels: Record<AssessmentStatusEnum, string> = {
   INSUFFICIENT_DATA: 'Insufficient data',
   NO_VALID_WINDOW: 'No eligible time window',
   LOCATION_UNSUPPORTED: 'Location outside supported coverage',
+  NO_NEARBY_COAST: 'No nearby coast',
   UPSTREAM_UNAVAILABLE: 'Forecast source unavailable',
 };
 

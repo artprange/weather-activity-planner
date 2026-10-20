@@ -2,11 +2,13 @@ import { useId } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
 
+import { LoadingSpinner } from '@/components/LoadingSpinner';
+import { LoadingSkeleton } from '@/components/LoadingSkeleton';
 import { Button } from '@/components/ui/button';
-import { DailyAssessmentCard } from '@/features/forecasts/DailyAssessmentCard';
+import { ActivityExplorer } from '@/features/forecasts/ActivityExplorer';
+import { LocationGlobe } from '@/features/places/LocationGlobe';
 import { activityForecastOptions } from '@/features/forecasts/forecast.queries';
 import {
-  ActivityLabels,
   formatForecastDate,
   formatGeneratedAt,
 } from '@/features/forecasts/forecastPresentation';
@@ -50,10 +52,15 @@ function ActivityForecast({ placeId }: ActivityForecastProps) {
       <p
         role="status"
         aria-atomic="true"
-        className="text-sm text-muted-foreground"
+        className="flex items-center gap-2 text-sm text-muted-foreground"
       >
+        {placeId !== null && query.isFetching && <LoadingSpinner />}
         {announcement}
       </p>
+
+      {placeId !== null && query.isFetching && forecast == null && (
+        <LoadingSkeleton variant="forecast" />
+      )}
 
       {placeId !== null &&
         !query.isFetching &&
@@ -71,63 +78,49 @@ function ActivityForecast({ placeId }: ActivityForecastProps) {
         )}
 
       {placeId !== null && forecast !== null && forecast !== undefined && (
-        <section aria-labelledby={titleId} className="space-y-8">
-          <header className="space-y-2">
-            <h2 id={titleId} className="text-2xl font-bold">
-              {[
-                forecast.place.name,
-                forecast.place.region,
-                forecast.place.country,
-              ]
-                .filter((part) => part !== null && part !== '')
-                .join(', ')}
-            </h2>
+        <section
+          aria-labelledby={titleId}
+          aria-busy={query.isFetching}
+          className="space-y-8"
+        >
+          <header className="grid gap-6 sm:grid-cols-[1fr_11rem] sm:items-center">
+            <div className="space-y-2">
+              <h2 id={titleId} className="text-2xl font-bold">
+                {[
+                  forecast.place.name,
+                  forecast.place.region,
+                  forecast.place.country,
+                ]
+                  .filter((part) => part !== null && part !== '')
+                  .join(', ')}
+              </h2>
 
-            <p>
-              {formatForecastDate(forecast.window.startDate)}
-              {' – '}
-              {formatForecastDate(forecast.window.endDate)}
-            </p>
+              <p>
+                {formatForecastDate(forecast.window.startDate)}
+                {' – '}
+                {formatForecastDate(forecast.window.endDate)}
+              </p>
 
-            <p className="text-sm text-muted-foreground">
-              All times use {forecast.timezone}.
-            </p>
+              <p className="text-sm text-muted-foreground">
+                All times use {forecast.timezone}.
+              </p>
 
-            <p className="text-sm text-muted-foreground">
-              Generated:{' '}
-              <time dateTime={forecast.generatedAt}>
-                {formatGeneratedAt(forecast.generatedAt, forecast.timezone)}
-              </time>
-            </p>
+              <p className="text-sm text-muted-foreground">
+                Generated:{' '}
+                <time dateTime={forecast.generatedAt}>
+                  {formatGeneratedAt(forecast.generatedAt, forecast.timezone)}
+                </time>
+              </p>
 
-            <p className="text-sm text-muted-foreground">
-              Scores describe weather suitability. They do not confirm venue
-              availability or safety.
-            </p>
+              <p className="text-sm text-muted-foreground">
+                Scores describe weather suitability. They do not confirm venue
+                availability or safety.
+              </p>
+            </div>
+            <LocationGlobe key={forecast.place.id} place={forecast.place} />
           </header>
 
-          {forecast.activities.map((group) => (
-            <details
-              key={`${forecast.place.id}-${group.activity}`}
-              className="rounded-xl border border-border"
-            >
-              <summary className="cursor-pointer rounded-xl px-5 py-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring">
-                <h3 className="inline text-xl font-semibold">
-                  {ActivityLabels[group.activity]}
-                </h3>
-              </summary>
-
-              <ol className="grid gap-4 px-4 pb-4 md:grid-cols-2 xl:grid-cols-3">
-                {group.days.map((day) => (
-                  <DailyAssessmentCard
-                    key={day.date}
-                    day={day}
-                    timezone={forecast.timezone}
-                  />
-                ))}
-              </ol>
-            </details>
-          ))}
+          <ActivityExplorer key={forecast.place.id} forecast={forecast} />
 
           <footer className="space-y-2 text-sm text-muted-foreground">
             <p>Data sources</p>

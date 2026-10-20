@@ -1,3 +1,4 @@
+import { Compass } from 'lucide-react';
 import { ThemeSwitcher } from '@/features/theme/themeSwitcher';
 import { Outlet } from '@tanstack/react-router';
 
@@ -11,9 +12,14 @@ function AppLayout() {
         Skip to main content
       </a>
 
-      <header className="border-b border-border">
+      <header className="border-b border-border bg-card/80 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-5">
-          <p className="font-semibold">Weather Activity Planner</p>
+          <p className="flex items-center gap-3 font-semibold">
+            <span className="flex size-10 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
+              <Compass aria-hidden="true" className="size-6" />
+            </span>
+            Weather Activity Planner
+          </p>
           <ThemeSwitcher />
         </div>
       </header>

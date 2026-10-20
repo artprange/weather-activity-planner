@@ -55,11 +55,11 @@ function ActivityDays({
     <div className="min-w-0 space-y-6">
       <section
         aria-label="Best day recommendation"
-        className="flex flex-wrap items-center justify-between gap-4 rounded-xl border bg-muted/30 p-5 sm:p-6"
+        className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-primary/30 bg-gradient-to-br from-accent to-card p-5 shadow-sm sm:p-6"
       >
         <div className="min-w-0 flex-1 space-y-2">
           <p className="flex items-center gap-2 text-sm font-semibold">
-            <Trophy aria-hidden="true" className="size-4" />
+            <Trophy aria-hidden="true" className="size-4 text-primary" />
             {best ? 'Best day this week' : 'No ranked day available'}
           </p>
           {best ? (
@@ -154,7 +154,7 @@ function ActivityDays({
               className={cn(
                 'w-36 shrink-0 snap-center space-y-2 rounded-xl border bg-card p-3 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring lg:w-auto',
                 day.date === selected.date
-                  ? 'border-foreground ring-1 ring-foreground'
+                  ? 'border-primary bg-accent ring-1 ring-primary'
                   : 'border-border hover:bg-muted/50',
               )}
             >

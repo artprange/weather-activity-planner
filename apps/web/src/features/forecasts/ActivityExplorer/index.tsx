@@ -4,6 +4,7 @@ import { getActivityRestriction } from '@/features/forecasts/activityRestriction
 
 import type { ActivityForecastType } from '@/features/forecasts/forecast.schemas';
 import { ActivityLabels } from '@/features/forecasts/forecastPresentation';
+import { ActivityIcon } from '@/features/forecasts/ActivityIcon';
 import { ActivityDays } from '@/features/forecasts/ActivityDays';
 import { cn } from '@/lib/utils';
 
@@ -23,7 +24,7 @@ function ActivityExplorer({ forecast }: { forecast: ActivityForecastType }) {
       <div
         role="tablist"
         aria-label="Activities"
-        className="flex gap-2 overflow-x-auto rounded-xl border bg-muted/40 p-2"
+        className="flex gap-2 overflow-x-auto rounded-xl border bg-card/80 p-2 shadow-sm"
       >
         {forecast.activities.map((group, index) => (
           <Tooltip.Root key={group.activity}>
@@ -75,11 +76,18 @@ function ActivityExplorer({ forecast }: { forecast: ActivityForecastType }) {
                 restrictions[index] !== null
                   ? 'cursor-not-allowed text-muted-foreground'
                   : selected === index
-                    ? 'bg-foreground text-background shadow-sm'
+                    ? 'bg-primary text-primary-foreground shadow-sm'
                     : 'text-muted-foreground hover:bg-muted hover:text-foreground',
               )}
             >
-              <span className="block">{ActivityLabels[group.activity]}</span>
+              <span className="flex items-center justify-center gap-2">
+                <ActivityIcon
+                  activity={group.activity}
+                  muted={restrictions[index] !== null}
+                  selected={selected === index}
+                />
+                <span>{ActivityLabels[group.activity]}</span>
+              </span>
               {restrictions[index] && (
                 <span
                   id={`${id}-reason-${index}`}

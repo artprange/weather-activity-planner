@@ -114,25 +114,30 @@ test('pointer selection collapses results with visible focus and search reopens 
   await expect(page.locator('fieldset ul')).toBeVisible();
 });
 
-test('renders seven chronological days, real zero and backend scores with keyboard details', async ({
+test('selects activities and chronological days with backend scores and explanatory cards', async ({
   page,
 }) => {
-  await mockGraphQL(page);
+  await mockGraphQL(page, { snowDepthCm: 30 });
   await page.goto('/?placeId=%223449433%22');
+  const skiing = page.getByRole('tab', { name: /^Skiing/ });
+  await skiing.focus();
+  await skiing.press('ArrowRight');
+  const surfing = page.getByRole('tab', { name: /^Surfing/ });
+  await expect(surfing).toBeFocused();
+  await expect(surfing).toHaveAttribute('aria-selected', 'true');
   for (const name of [
     'Skiing',
     'Surfing',
     'Outdoor sightseeing',
     'Indoor sightseeing',
   ]) {
+    await page.getByRole('tab', { name: new RegExp(`^${name}`) }).click();
     const group = activityGroup(page, name);
-    await expect(group.locator('article').first()).toBeHidden();
-    await group.locator('summary').first().focus();
-    await page.keyboard.press('Enter');
-    await expect(group.locator('article')).toHaveCount(7);
+    const days = group.getByRole('group', { name: 'Forecast days' });
+    await expect(days.getByRole('button')).toHaveCount(7);
     expect(
-      await group
-        .locator('article h4 time')
+      await days
+        .locator('time')
         .evaluateAll((elements) =>
           elements.map((element) => element.getAttribute('datetime')),
         ),
@@ -145,23 +150,31 @@ test('renders seven chronological days, real zero and backend scores with keyboa
       '2026-10-25',
       '2026-10-26',
     ]);
+    await days.getByRole('button').first().click();
+    await days.getByRole('button').first().press('End');
+    await expect(days.getByRole('button').last()).toBeFocused();
+    await expect(days.getByRole('button').last()).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
+    await expect(group.locator('article')).toHaveCount(1);
+    await expect(group.locator('article time').first()).toHaveAttribute(
+      'datetime',
+      '2026-10-26',
+    );
+    await expect(
+      group.getByRole('button', { name: 'Next day', exact: true }),
+    ).toBeDisabled();
   }
-  await expect(
-    activityGroup(page, 'Skiing').getByText('0/100', { exact: true }),
-  ).toHaveCount(7);
-  await expect(
-    activityGroup(page, 'Surfing').getByText('88/100', { exact: true }),
-  ).toHaveCount(7);
-  const details = activityGroup(page, 'Surfing')
-    .locator('article')
-    .first()
-    .locator('summary');
-  await details.focus();
-  await page.keyboard.press('Enter');
+  await page.getByRole('tab', { name: /^Surfing/ }).click();
   await expect(
     activityGroup(page, 'Surfing')
       .locator('article')
-      .first()
+      .getByText('88/100', { exact: true }),
+  ).toBeVisible();
+  await expect(
+    activityGroup(page, 'Surfing')
+      .locator('article')
       .getByText('Wave height', { exact: true }),
   ).toBeVisible();
 });
@@ -174,19 +187,17 @@ test('preserves useful activities when marine data is missing', async ({
   await expect(
     page.getByText(/Some activity scores are unavailable/),
   ).toBeVisible();
-  await activityGroup(page, 'Surfing').locator('summary').first().click();
+  await page.getByRole('tab', { name: /^Surfing/ }).click();
+  const surfing = activityGroup(page, 'Surfing');
   await expect(
-    activityGroup(page, 'Surfing').getByText('Score unavailable', {
-      exact: true,
-    }),
-  ).toHaveCount(7);
-  await expect(
-    activityGroup(page, 'Surfing').getByText('0/100', { exact: true }),
-  ).toHaveCount(0);
-  await activityGroup(page, 'Skiing').locator('summary').first().click();
-  await expect(
-    activityGroup(page, 'Skiing').getByText('0/100', { exact: true }),
-  ).toHaveCount(7);
+    surfing.getByText('Score unavailable', { exact: true }),
+  ).toBeVisible();
+  await expect(surfing.getByText('No ranked day available')).toBeVisible();
+  await expect(surfing.getByText('0/100', { exact: true })).toHaveCount(0);
+  await expect(page.getByRole('tab', { name: /^Skiing/ })).toHaveAttribute(
+    'aria-disabled',
+    'true',
+  );
 });
 
 test('recovers from search HTTP errors and forecast GraphQL errors', async ({

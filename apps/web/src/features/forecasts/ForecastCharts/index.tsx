@@ -97,12 +97,12 @@ function ForecastCharts({
               <linearGradient id={`${id}-fill`} x1="0" y1="0" x2="0" y2="1">
                 <stop
                   offset="0%"
-                  stopColor="var(--foreground)"
-                  stopOpacity={0.15}
+                  stopColor="var(--chart-1)"
+                  stopOpacity={0.25}
                 />
                 <stop
                   offset="100%"
-                  stopColor="var(--foreground)"
+                  stopColor="var(--chart-1)"
                   stopOpacity={0.01}
                 />
               </linearGradient>
@@ -149,7 +149,7 @@ function ForecastCharts({
               name={FactorLabels[factor]}
               type="linear"
               dataKey="value"
-              stroke="var(--foreground)"
+              stroke="var(--chart-1)"
               strokeWidth={2}
               dot={{ r: 4 }}
               connectNulls={false}

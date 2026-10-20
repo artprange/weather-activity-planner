@@ -1,7 +1,11 @@
 import { useId, useState, type SubmitEvent } from 'react';
 
+import { Search } from 'lucide-react';
+
 import { useQuery } from '@tanstack/react-query';
 
+import { LoadingSpinner } from '@/components/LoadingSpinner';
+import { LoadingSkeleton } from '@/components/LoadingSkeleton';
 import { Button } from '@/components/ui/button';
 import { PlaceSearchResults } from '@/features/places/PlaceSearchResults';
 import { searchPlacesOptions } from '@/features/places/placeSearch.queries';
@@ -92,6 +96,11 @@ function PlaceSearch({ selectedPlaceId, onSelect, onClear }: PlaceSearchProps) {
           />
 
           <Button type="submit" size="lg" className="min-h-11">
+            {searchQuery.isFetching ? (
+              <LoadingSpinner />
+            ) : (
+              <Search aria-hidden="true" className="size-4" />
+            )}
             Search locations
           </Button>
         </div>
@@ -104,10 +113,15 @@ function PlaceSearch({ selectedPlaceId, onSelect, onClear }: PlaceSearchProps) {
       <p
         role="status"
         aria-atomic="true"
-        className="text-sm text-muted-foreground"
+        className="flex items-center gap-2 text-sm text-muted-foreground"
       >
+        {searchQuery.isFetching && <LoadingSpinner />}
         {announcement}
       </p>
+
+      {searchQuery.isFetching && places === undefined && (
+        <LoadingSkeleton variant="locations" />
+      )}
 
       {searchQuery.isError && !searchQuery.isFetching && (
         <Button

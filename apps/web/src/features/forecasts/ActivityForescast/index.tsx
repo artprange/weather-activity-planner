@@ -43,7 +43,7 @@ function ActivityForecast({ placeId }: ActivityForecastProps) {
 
       announcement = partial
         ? `Forecast loaded for ${forecast.place.name}. Some activity scores are unavailable; available scores are shown below.`
-        : `Seven-day forecast loaded for ${forecast.place.name}.`;
+        : '';
     }
   }
 
@@ -102,7 +102,7 @@ function ActivityForecast({ placeId }: ActivityForecastProps) {
               </p>
 
               <p className="text-sm text-muted-foreground">
-                All times use {forecast.timezone}.
+                All times use {forecast.timezone.replaceAll('_', ' ')}.
               </p>
 
               <p className="text-sm text-muted-foreground">
@@ -113,8 +113,8 @@ function ActivityForecast({ placeId }: ActivityForecastProps) {
               </p>
 
               <p className="text-sm text-muted-foreground">
-                Scores describe weather suitability. They do not confirm venue
-                availability or safety.
+                Scores describe weather suitability. Check local conditions and
+                opening hours before heading out.
               </p>
             </div>
             <LocationGlobe key={forecast.place.id} place={forecast.place} />

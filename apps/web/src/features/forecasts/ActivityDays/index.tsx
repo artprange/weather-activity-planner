@@ -21,13 +21,11 @@ function ActivityDays({
 }) {
   const id = useId();
   const best = group.days.find((day) => day.rank === 1);
-  const [selectedDate, setSelectedDate] = useState(
-    best?.date ?? group.days[0]?.date,
-  );
+
+  const [selectedDate, setSelectedDate] = useState(group.days[0]?.date);
+
   const selected =
-    group.days.find((day) => day.date === selectedDate) ??
-    best ??
-    group.days[0];
+    group.days.find((day) => day.date === selectedDate) ?? group.days[0];
   const buttons = useRef<(HTMLButtonElement | null)[]>([]);
   useEffect(() => {
     const index = group.days.findIndex((day) => day.date === selected?.date);

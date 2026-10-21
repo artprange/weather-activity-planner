@@ -44,7 +44,7 @@ const output = await codegen({
 
 await writeFile(
   new URL('../src/graphql/generated.ts', import.meta.url),
-  output,
+  output.replace(/^\s*\/\*\*[\s\S]*?\*\/\r?\n/gm, ''),
 );
 
 const webOutput = await codegen({
@@ -62,4 +62,7 @@ const webOutput = await codegen({
 const webDirectory = new URL('../../web/src/graphql/', import.meta.url);
 
 await mkdir(webDirectory, { recursive: true });
-await writeFile(new URL('generated.ts', webDirectory), webOutput);
+await writeFile(
+  new URL('generated.ts', webDirectory),
+  webOutput.replace(/^\s*\/\*\*[\s\S]*?\*\/\r?\n/gm, ''),
+);

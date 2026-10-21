@@ -6,7 +6,6 @@ type ActivityGroupType = ActivityForecastType['activities'][number];
 function getActivityRestriction(
   group: ActivityGroupType,
 ): ActivityRestrictionType | null {
-  // Require a complete week of explicit evidence. Missing data is not absence.
   if (group.days.length !== 7) return null;
   if (
     group.activity === 'SURFING' &&

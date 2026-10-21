@@ -1,4 +1,4 @@
-const typeDefs = /* GraphQL */ `
+const typeDefs = `
   enum ActivityEnum {
     SKIING
     SURFING

@@ -7,7 +7,7 @@ import {
   searchPlacesDataSchema,
 } from './placeSearch.schemas';
 
-const searchPlacesDocument = /* GraphQL */ `
+const searchPlacesDocument = `
   query SearchPlaces($query: String!) {
     searchPlaces(query: $query) {
       id

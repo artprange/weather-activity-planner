@@ -1,8 +1,3 @@
-"""Convert the pinned Natural Earth GeoJSON to compact ocean coast lines.
-
-Download the source URL recorded in src/locations/data/README.md and pass its
-local path. No network calls or third-party dependencies are used here.
-"""
 import hashlib
 import json
 from pathlib import Path
@@ -24,7 +19,6 @@ for feature in features:
     else:
         raise ValueError('Unexpected coastline geometry')
     for part in parts:
-        # Natural Earth includes the landlocked Caspian Sea and its islands.
         if all(45 < lon < 56 and 35 < lat < 49 for lon, lat in part):
             excluded += 1
             continue

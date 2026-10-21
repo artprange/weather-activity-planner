@@ -17,7 +17,6 @@ export type InputMaybe<T> = Maybe<T>;
 export type RequireFields<T, K extends keyof T> = Omit<T, K> & {
   [P in K]-?: NonNullable<T[P]>;
 };
-/** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string; output: string };
   String: { input: string; output: string };
@@ -262,8 +261,6 @@ export type DirectiveResolverFn<
   context: TContext,
   info: GraphQLResolveInfo,
 ) => TResult | Promise<TResult>;
-
-/** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   ActivityEnum: ActivityEnum;
   SuitabilityEnum: SuitabilityEnum;
@@ -285,8 +282,6 @@ export type ResolversTypes = {
   Query: ResolverTypeWrapper<Record<PropertyKey, never>>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
 };
-
-/** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Place: GeocodedLocationType;
   ID: Scalars['ID']['output'];

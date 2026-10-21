@@ -9,7 +9,6 @@ function LocationGlobe({ place }: { place: SearchPlaceType }) {
   useEffect(() => {
     const container = containerRef.current;
     if (container === null) return;
-    // COBE reparents its canvas; keep its DOM inside an isolated React host.
     const canvas = document.createElement('canvas');
     canvas.style.cssText = 'width:100%;height:100%;display:block';
     container.append(canvas);
@@ -41,8 +40,6 @@ function LocationGlobe({ place }: { place: SearchPlaceType }) {
           },
         ],
       });
-      // COBE v2 loads its map texture asynchronously without requesting a redraw.
-      // Redraw the fixed view so the continents appear after the texture loads.
       const render = () => {
         globe?.update({});
         frame = requestAnimationFrame(render);

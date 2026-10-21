@@ -4,7 +4,7 @@ import { requestGraphQL } from '@/lib/graphqlClient';
 
 import { activityForecastDataSchema } from './forecast.schemas';
 
-const activityForecastDocument = /* GraphQL */ `
+const activityForecastDocument = `
   query ActivityForecast($placeId: ID!) {
     activityForecast(placeId: $placeId) {
       place {

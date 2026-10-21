@@ -77,8 +77,6 @@ function getCoastDistanceKm(location: ForecastGridType): number {
   for (const segment of segments) {
     const startDot = dot(point, segment.start);
     const tangentDot = dot(point, segment.tangent);
-    // Project onto the short great-circle arc, including endpoints. Using
-    // unit vectors avoids longitude-wrap and polar projection errors.
     const along = Math.atan2(tangentDot, startDot);
     const candidate =
       along >= 0 && along <= segment.angle

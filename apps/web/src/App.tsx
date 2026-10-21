@@ -19,12 +19,12 @@ function HomePage() {
             id="page-title"
             className="text-3xl font-bold tracking-tight sm:text-4xl"
           >
-            Find the right day for your next activity
+            Find your next great day out.
           </h1>
 
           <p className="text-muted-foreground">
-            Compare weather conditions for skiing, surfing and sightseeing.
-            Start by choosing a location.
+            Catch some waves, hit the slopes, or explore somewhere new. Check
+            the forecast and pick your day.
           </p>
         </div>
 

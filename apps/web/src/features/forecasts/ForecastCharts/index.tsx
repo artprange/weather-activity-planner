@@ -83,9 +83,14 @@ function ForecastCharts({
           </select>
         </div>
       </div>
-      <p className="mt-5 text-sm font-medium">
-        {FactorLabels[factor]} ({unit})
-      </p>
+      <div className="mt-5 flex flex-wrap items-center justify-between gap-2 text-sm">
+        <p className="font-medium">
+          {FactorLabels[factor]} ({unit})
+        </p>
+        <p className="flex items-center gap-2 text-muted-foreground">
+          Selected: {formatForecastDate(selectedDate)}
+        </p>
+      </div>
       <div className="mt-3 h-64 min-w-0">
         <ResponsiveContainer width="100%" height="100%" minWidth={0}>
           <AreaChart
@@ -110,6 +115,7 @@ function ForecastCharts({
             <CartesianGrid vertical={false} stroke="var(--border)" />
             <XAxis
               dataKey="date"
+
               tickFormatter={(date: string) => date.slice(5)}
               tick={{ fill: 'var(--muted-foreground)', fontSize: 12 }}
               minTickGap={20}
@@ -137,12 +143,6 @@ function ForecastCharts({
               x={selectedDate}
               stroke="var(--muted-foreground)"
               strokeDasharray="4 4"
-              label={{
-                value: 'Selected',
-                fill: 'var(--foreground)',
-                fontSize: 12,
-                position: 'insideTop',
-              }}
             />
             <Area
               fill={`url(#${id}-fill)`}

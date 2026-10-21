@@ -57,7 +57,7 @@ function PlaceSearch({ selectedPlaceId, onSelect, onClear }: PlaceSearchProps) {
     setSubmittedQuery(result.data);
   }
 
-  let announcement = 'Enter a city or town to search for locations.';
+  let announcement = '';
 
   if (submittedQuery !== '') {
     if (searchQuery.isFetching) {
@@ -76,7 +76,7 @@ function PlaceSearch({ selectedPlaceId, onSelect, onClear }: PlaceSearchProps) {
     <div className="space-y-6">
       <form onSubmit={handleSubmit} noValidate className="space-y-3">
         <label htmlFor={inputId} className="block font-medium">
-          City or town
+          Where are you headed?
         </label>
 
         <div className="flex flex-col gap-3 sm:flex-row">
@@ -85,6 +85,7 @@ function PlaceSearch({ selectedPlaceId, onSelect, onClear }: PlaceSearchProps) {
             type="search"
             name="place"
             value={input}
+            placeholder="City or town"
             onChange={(event) => {
               setInput(event.target.value);
               setValidationError(null);
@@ -101,7 +102,7 @@ function PlaceSearch({ selectedPlaceId, onSelect, onClear }: PlaceSearchProps) {
             ) : (
               <Search aria-hidden="true" className="size-4" />
             )}
-            Search locations
+            Find locations
           </Button>
         </div>
 

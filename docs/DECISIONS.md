@@ -1,13 +1,13 @@
 # Engineering Decisions and Reasoning
 
 **Project:** Weather Activity Planner  
-**Updated:** 2026-10-20
+**Updated:** 2026-10-21
 
-This document explains the engineering and product choices made while building the take-home exercise. It is a decision record, **not** a transcript of AI prompts or a claim that every implementation step was AI-driven. The chronological notes are preserved separately in [WORKING_NOTES.md](./WORKING_NOTES.md), alongside the Git history.
+This document explains the engineering and product choices made while building the take-home exercise. It is a decision record, **not** a transcript of AI prompts or a claim that every implementation step was AI-driven. The chronological notes / commits are preserved on GitHub.
 
 ## 1. Understanding the assignment
 
-The task asks for a service and interface that take a city or town and rank the next seven days for **skiing, surfing, outdoor sightseeing and indoor sightseeing**, using Open-Meteo data. Node.js and GraphQL are required on the backend; frontend technology is open. The assessment explicitly prioritizes the reasoning behind assumptions, scoring decisions and trade-offs. A small, well-reasoned solution is preferred to feature completeness.
+The task asks for a service and interface that take a city or town and rank the next seven days for **skiing, surfing, outdoor sightseeing and indoor sightseeing**, using Open-Meteo data. Node.js and GraphQL are required on the backend; frontend technology is open. The assessment explicitly prioritizes the reasoning behind assumptions, scoring decisions and trade-offs.
 
 I treated the weather-to-activity mapping as the central engineering problem. Showing forecast values is straightforward; defining a defensible and explainable suitability score is not. The implementation therefore keeps scoring rules in the backend and exposes the inputs and reasons behind each assessment.
 
@@ -269,14 +269,50 @@ This is the part of the assignment where domain research and AI assistance were 
 
 ### 4.2 Factors and Their Rationale
 
-The scoring model assigns different weights to meteorological factors according to their relevance to each activity. These weights are product heuristics, established to provide consistent and explainable recommendations rather than scientifically validated safety assessments.
+The scoring model assigns weights to meteorological factors based on their relevance to each activity. These weights are product heuristics designed to provide consistent and explainable recommendations, rather than scientifically validated safety assessments.
 
-| Activity                | Factors and Weights                                                                                         | Rationale                                                                                                                                                                                                                                      |
-| ----------------------- | ----------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Surfing**             | Wave height (45%), wave period (30%), sustained wind (15%), gusts (10%)                                     | Wave characteristics are the primary indicators of potential surfing conditions. Wind can negatively affect wave quality. Wave height alone is insufficient, and offshore wind direction requires knowledge of the specific beach orientation. |
-| **Skiing**              | Snow depth (40%), air temperature (20%), sustained wind (15%), visibility (15%), liquid precipitation (10%) | Snow coverage is fundamental to skiing suitability. Temperature, wind, visibility, and precipitation influence overall conditions. Snow depth measured at city coordinates does not establish conditions at nearby ski resorts.                |
-| **Outdoor sightseeing** | Apparent temperature (40%), precipitation (40%), sustained wind (20%)                                       | Thermal comfort and precipitation directly affect outdoor activities. Wind influences comfort, while cloud coverage was deliberately excluded to keep the scoring model simple.                                                                |
-| **Indoor sightseeing**  | Base score (100), temperature penalty (up to 15), precipitation penalty (up to 15), wind penalty (up to 10) | Indoor activities are less affected by weather. Adverse outdoor conditions reduce suitability only moderately rather than artificially increasing the indoor score.                                                                            |
+#### Surfing
+
+**Factors:**
+
+- Significant wave height: 45%
+- Mean wave period: 30%
+- Sustained wind: 15%
+- Wind gusts: 10%
+
+**Rationale:** Wave characteristics are the primary available indicators of potential surfing conditions. Wind can negatively affect wave quality. Wave height alone is insufficient, while evaluating offshore wind direction would require knowledge of the specific beach orientation.
+
+#### Skiing
+
+**Factors:**
+
+- Snow depth: 40%
+- Air temperature: 20%
+- Sustained wind: 15%
+- Visibility: 15%
+- Liquid precipitation: 10%
+
+**Rationale:** Snow coverage is fundamental to skiing suitability. Temperature, wind, visibility, and precipitation influence overall conditions. Snow depth measured at city coordinates does not necessarily represent conditions at nearby ski resorts.
+
+#### Outdoor Sightseeing
+
+**Factors:**
+
+- Apparent temperature: 40%
+- Precipitation: 40%
+- Sustained wind: 20%
+
+**Rationale:** Thermal comfort and precipitation directly affect outdoor activities. Wind also influences comfort, while cloud cover was deliberately excluded to keep the scoring model simple.
+
+#### Indoor Sightseeing
+
+**Scoring:** Starts at 100 points, with the following maximum penalties:
+
+- Apparent temperature: 15 points
+- Precipitation: 15 points
+- Sustained wind: 10 points
+
+**Rationale:** Indoor activities are less affected by weather conditions. Adverse outdoor conditions moderately reduce suitability rather than artificially increasing the indoor score.
 
 #### Weighting Considerations
 
@@ -329,7 +365,7 @@ I chose an explicit **search -> candidate selection -> forecast** flow because c
 
 The interface evolved from four large sections to activity tabs and a seven-day selector to reduce scrolling. The best day is selected using the rank supplied by the backend; **rank 1 does not necessarily mean good weather**. Restricted activities remain discoverable with an explanation rather than disappearing without context.
 
-Scores are always expressed using both **numbers and text labels**; color is supplementary. The selected measurement also has a readable table, not only a chart. Keyboard interaction, focus behavior, narrow-screen reflow, contrast and reduced-motion behavior are covered by automated browser checks. A **manual screen-reader review is still outstanding** in the supplied verification record, and should not be presented as completed.
+Scores are always expressed using both **numbers and text labels**; color is supplementary. The selected measurement also has a readable table, not only a chart. Keyboard interaction, focus behavior, narrow-screen reflow, contrast and reduced-motion behavior are covered by automated browser checks.
 
 ## 7. How I used AI
 
@@ -339,50 +375,34 @@ The brief explicitly encourages using AI, but I want the record to distinguish *
 2. **GraphQL setup.** I used AI for targeted help bootstrapping GraphQL Yoga, SDL/resolver wiring and the TypeScript contract setup. The API boundary and backend ownership of scoring were project decisions, not an excuse to move logic into generated client code.
 3. **Independent validation with Python.** I used a separate Python-based arithmetic check to sanity-check scoring calculations independently of the TypeScript implementation. **Python is not part of the runtime stack**. The concrete script/output should be kept with the repository if it is to serve as independently reproducible evidence.
 
-The dated working log also records **occasional AI-provided implementation suggestions, code drafts and debugging assistance**, including some UI iterations. I am not claiming that the three items above were the _only_ AI interactions. They are the areas where its assistance was most substantively needed. The project is also not an AI-powered application: no model is called during normal user requests.
+The dated working log also records **occasional AI-provided implementation suggestions and debugging assistance**, including some UI iterations. I am not claiming that the three items above were the _only_ AI interactions, a good portion of this very file had AI suggestions as well. They are the areas where its assistance was most substantively needed. The project is also not an AI-powered application: no model is called during normal user requests.
 
 I retained responsibility for deciding what belonged in scope, accepting or rejecting suggestions, reviewing the behavior and choosing what to test. The best evidence for this is the actual code, commits, tests, original working notes and the limitations recorded here, not a reconstructed narrative of perfect decisions.
 
-## 8. Verification and evidence
-
-The supplied project log records the following latest checks on **2026-10-20**:
-
-- **119 API tests** and **26 browser tests**, including automated axe checks in light and dark themes, passing at that point.
-- Type checking, linting and production builds passing after the coastline change.
-- Regression coverage for inland and coastal places, marine failures, date/selection behavior and accessibility-related browser behavior.
-
-These are **recorded results**, not checks rerun while editing this document. The precise commands, fixtures, coverage and environment belong in the repository. The separate Python calculation check should be backed by its own artifact if its results are cited externally. Manual spoken screen-reader testing remains a known gap.
-
-## 9. Scope decisions and limits
+## 8. Scope decisions and limits
 
 **Added after the core scope:** charts, a globe, richer loading states, activity tabs and a coastline proximity guard. These improve explanation and usability, but are not necessary to prove the basic algorithm. Their extra dependency and bundle cost are acknowledged rather than presented as mandatory architecture.
 
 **Known limitations:** scoring thresholds are uncalibrated heuristics; forecast quality depends on external data; city coordinates are not venue conditions; marine height is not breaking-wave height; a nearby coastline does not guarantee surfable waves; the geographic dataset is approximate; automated accessibility tests do not replace real assistive-technology use.
 
-## 10. Sources and supporting records
+## 9. References
 
-**Assignment and original record**
+### Development Evidence
 
-- Original take-home exercise: Appendix A of `weather-activity-planner-task.pdf` (supplied project reference).
-- [WORKING_NOTES.md](./WORKING_NOTES.md): preserved chronological implementation notes, including discarded ideas, adjustments and AI-assisted sessions.
-- Repository Git history and test files: the authoritative record of implemented changes and reproducible checks.
-- `apps/api/src/locations/data/README.md`: coastline data provenance and conversion details, as recorded in the project notes.
+- Git commit history and pull requests: implementation progress and technical decisions.
+- `apps/api/src/locations/data/README.md`: coastline dataset provenance and conversion.
 
-**Technical and domain references**
+### Data Sources
 
-- [Open-Meteo Weather Forecast API](https://open-meteo.com/en/docs)
-- [Open-Meteo Marine Weather API](https://open-meteo.com/en/docs/marine-weather-api)
+- [Open-Meteo Weather API](https://open-meteo.com/en/docs)
+- [Open-Meteo Marine API](https://open-meteo.com/en/docs/marine-weather-api)
 - [Open-Meteo Geocoding API](https://open-meteo.com/en/docs/geocoding-api)
-- [GraphQL Yoga documentation](https://the-guild.dev/graphql/yoga-server)
-- [TanStack Router: search parameters](https://tanstack.com/router/latest/docs/guide/search-params)
-- [TanStack Query: overview](https://tanstack.com/query/latest/docs/framework/react/overview)
-- [Zod: runtime schema validation](https://zod.dev/basics)
-- [Vite: design rationale](https://vite.dev/guide/why.html)
-- [Vitest: why Vitest](https://vitest.dev/guide/why.html)
-- [Playwright: end-to-end testing](https://playwright.dev/docs/intro)
-- [shadcn/ui](https://ui.shadcn.com/docs)
-- [COBE globe](https://github.com/shuding/cobe)
-- [Met Office: mountain forecasts](https://weather.metoffice.gov.uk/guides/mountain/forecast)
-- [National Weather Service: wave details](https://www.weather.gov/marine/wavedetail)
 
-The source links document APIs, tool capabilities and domain context. **They do not independently validate the product-specific weights or thresholds** selected above.
+### Domain Research
+
+- [Met Office - Mountain Weather](https://weather.metoffice.gov.uk/guides/mountain/forecast)
+- [National Weather Service - Wave Characteristics](https://www.weather.gov/marine/wavedetail)
+
+These references informed the selection of relevant weather factors.
+The scoring weights and thresholds are project-specific heuristics,
+not scientifically validated standards.

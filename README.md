@@ -1,23 +1,23 @@
 # Weather Activity Planner
 
-A full-stack application that compares weather forecasts to help users choose suitable days for skiing, surfing, and sightseeing.
+A full-stack application that analyzes weather forecasts to help users identify suitable days for skiing, surfing, outdoor sightseeing, and indoor sightseeing.
 
 ## Features
 
 - Location search and seven-day activity forecasts.
-- Daily suitability scores with contributing factors and limitations.
+- Daily suitability scores with contributing factors and explanations.
 - Weather charts and an interactive location globe.
-- Activity availability checks for coastal proximity, snow, and waves.
+- Weather-based activity restrictions and coastal proximity validation.
 - Responsive interface with light and dark themes.
 
-## Stack
+## Tech Stack
 
-- **Frontend:** React, TypeScript, Vite, Tailwind CSS, TanStack Query, Recharts, and COBE.
-- **Backend:** Node.js, TypeScript, GraphQL Yoga, and Zod.
+- **Frontend:** React, TypeScript, Vite, Tailwind CSS, shadcn/ui, TanStack Router, TanStack Query, Recharts, and COBE.
+- **Backend:** Node.js 24, TypeScript, GraphQL Yoga, and Zod.
 - **Testing:** Vitest, Playwright, and axe-core.
 - **Data:** Open-Meteo and Natural Earth.
 
-## Running locally
+## Running Locally
 
 Requires **Node.js 24** and **npm**.
 
@@ -25,6 +25,12 @@ Install dependencies from the repository root:
 
 ```bash
 npm ci
+```
+
+Create the local API configuration:
+
+```bash
+cp apps/api/.env.example apps/api/.env
 ```
 
 Start the API and frontend in separate terminals:
@@ -37,13 +43,15 @@ npm run dev:api
 npm run dev:web
 ```
 
-Open http://localhost:5173.
+Open [http://localhost:5173](http://localhost:5173).
 
-The API runs at http://127.0.0.1:4000/graphql. Vite proxies frontend GraphQL requests to it. Internet access is required for location searches and forecasts.
+The GraphQL API runs at [http://127.0.0.1:4000/graphql](http://127.0.0.1:4000/graphql).
 
-Optional API configuration is available in `apps/api/.env.example`. Changing the API port also requires updating the Vite proxy.
+Vite proxies frontend GraphQL requests to the API. Internet access is required for location searches and weather forecasts.
 
 ## Validation
+
+Run the following commands from the repository root:
 
 ```bash
 npm run typecheck
@@ -53,39 +61,55 @@ npm test
 npm run build
 ```
 
-For end-to-end tests, install Chromium first:
+For end-to-end tests, install Chromium:
 
 ```bash
 npx playwright install chromium
 npm run test:e2e
 ```
 
-## Project structure
+## Project Structure
 
 ```text
 apps/
-  api/    GraphQL API, forecast integrations, and activity scoring
-  web/    React interface and end-to-end tests
-docs/     Technical decisions and backlog
+  api/    GraphQL API, weather integrations, and scoring engine
+  web/    React frontend
+
+docs/
+  DECISIONS.md
+  BACKLOG.md
 ```
 
-## Key decisions
+## Assumptions and Limitations
 
-- **Backend-owned scoring:** activity scores, rankings, and explanations are calculated by the API.
-- **Explicit availability:** missing forecast data is distinguished from unsuitable conditions.
-- **Coastal validation:** surfing uses coastline proximity alongside marine forecast checks.
-- **Transparent results:** the interface displays evaluated time windows, contributing factors, and score limitations.
+- **Forecast period:** Seven complete calendar days starting tomorrow, using the selected location's timezone.
+- **Activity scoring:** Scores represent weather suitability, not safety or actual venue availability.
+- **Ranking:** Each activity is ranked independently based on its calculated daily score.
+- **Scoring model:** Weather factors, weights, and thresholds are defined as product heuristics, not scientifically calibrated predictions.
+- **Missing data:** Unavailable observations are distinguished from unfavorable conditions.
+- **Geographic limitations:** Coastal proximity does not guarantee a suitable surfing location, and snow depth does not confirm ski resort availability.
+- **Weather charts:** Measurements represent averages over evaluated activity windows rather than complete hourly forecasts.
 
-The coastline dataset is bundled with the API. Python is only needed to regenerate it, not to run or build the application.
+The scoring model and its assumptions are explained in detail in [Engineering Decisions](./docs/DECISIONS.md).
 
-## Limitations
+## Development Process
 
-Scores are planning estimates based on forecast conditions. Coastal proximity does not guarantee a usable surf spot, and snow depth does not confirm resort or trail availability. Chart values represent averages over evaluated windows, not hourly forecasts.
+The application was developed incrementally using feature branches and pull requests.
 
-## Documentation and data
+The implementation progressed from project setup and Open-Meteo integration to business logic, GraphQL, frontend development, testing, and additional improvements.
 
-- [Technical decisions and scoring rules](docs/DECISIONS.md)
-- [Backlog](docs/BACKLOG.md)
-- [Coastline dataset provenance and regeneration](apps/api/src/locations/data/README.md)
+AI assistance was particularly useful for researching weather-related business rules, setting up GraphQL, and independently checking scoring calculations with Python.
 
-Weather forecasts and location search are provided by Open-Meteo. Coastline data comes from Natural Earth.
+Supporting documentation:
+
+- [Engineering Decisions](./docs/DECISIONS.md): Technical choices, scoring rules, assumptions, trade-offs, and AI-assisted work.
+- [Development Backlog](./docs/BACKLOG.md): Implementation tasks and additional improvements.
+
+## Data Sources
+
+- [Open-Meteo](https://open-meteo.com/): Location searches, weather forecasts, and marine conditions.
+- [Natural Earth](https://www.naturalearthdata.com/): Geographic coastline data.
+
+The coastline dataset is bundled with the backend. Python is only required to regenerate this dataset, not to run the application.
+
+Dataset provenance and regeneration instructions are available in [Coastline Data Documentation](./apps/api/src/locations/data/README.md).

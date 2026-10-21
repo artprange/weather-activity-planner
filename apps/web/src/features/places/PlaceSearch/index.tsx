@@ -85,7 +85,7 @@ function PlaceSearch({ selectedPlaceId, onSelect, onClear }: PlaceSearchProps) {
             type="search"
             name="place"
             value={input}
-            placeholder="City or town"
+            placeholder="Location"
             onChange={(event) => {
               setInput(event.target.value);
               setValidationError(null);

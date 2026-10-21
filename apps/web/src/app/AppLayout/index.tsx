@@ -18,7 +18,7 @@ function AppLayout() {
             <span className="flex size-10 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
               <Compass aria-hidden="true" className="size-6" />
             </span>
-            Out There
+            Out There - Weather Activity Planner
           </p>
           <ThemeSwitcher />
         </div>

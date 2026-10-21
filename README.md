@@ -2,6 +2,8 @@
 
 A full-stack application that analyzes weather forecasts to help users identify suitable days for skiing, surfing, outdoor sightseeing, and indoor sightseeing.
 
+**Live demo:** [Weather Activity Planner](https://weather.prange.dev)
+
 ## Features
 
 - Location search and seven-day activity forecasts.

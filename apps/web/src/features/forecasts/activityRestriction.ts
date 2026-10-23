@@ -1,3 +1,4 @@
+import { StatusLabels } from '@/features/forecasts/forecastPresentation';
 import type { ActivityForecastType } from '@/features/forecasts/forecast.schemas';
 
 type ActivityRestrictionType = { label: string; description: string };
@@ -25,6 +26,15 @@ function getActivityRestriction(
       label: 'Outside coastal coverage',
       description:
         'The marine forecast point is outside our supported 25 km range for this location.',
+    };
+  }
+  if (group.days.every((day) => day.status !== 'AVAILABLE')) {
+    const reasons = [
+      ...new Set(group.days.map((day) => StatusLabels[day.status])),
+    ];
+    return {
+      label: 'No forecast available',
+      description: `No scores could be calculated for this seven-day forecast. ${reasons.join('; ')}. Try again later or choose another location.`,
     };
   }
   const factor =

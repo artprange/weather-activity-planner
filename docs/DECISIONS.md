@@ -104,3 +104,7 @@ Commit history, pull requests, and working notes preserve the development sequen
 - [Coastline dataset documentation](../apps/api/src/locations/data/README.md)
 
 Domain references informed factor selection; numerical weights and thresholds are project-specific choices.
+
+## Unavailable activity weeks
+
+When all seven days lack an available assessment, the activity tab remains visible but cannot be selected. Its explanation lists the reported reasons without treating missing data as evidence of unsuitable geography. Weeks with at least one available assessment remain inspectable. If no activity can be selected, the interface shows a shared empty state.

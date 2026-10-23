@@ -47,7 +47,7 @@ function ActivityExplorer({ forecast }: { forecast: ActivityForecastType }) {
                 restrictions[index] ? `${id}-reason-${index}` : undefined
               }
               onFocus={() => setFocused(index)}
-              tabIndex={(focused ?? selected) === index ? 0 : -1}
+              tabIndex={(focused ?? Math.max(selected, 0)) === index ? 0 : -1}
               onClick={() => {
                 if (restrictions[index] === null) setSelected(index);
               }}
@@ -116,6 +116,16 @@ function ActivityExplorer({ forecast }: { forecast: ActivityForecastType }) {
           </Tooltip.Root>
         ))}
       </div>
+      {selected === -1 && (
+        <p
+          role="status"
+          className="rounded-xl border p-5 text-muted-foreground"
+        >
+          No activity forecasts are available for this location. Check the
+          reasons on each activity tab, try another location, or try again
+          later.
+        </p>
+      )}
       {forecast.activities.map((group, index) => (
         <div
           key={group.activity}

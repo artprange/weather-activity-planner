@@ -187,13 +187,16 @@ test('preserves useful activities when marine data is missing', async ({
   await expect(
     page.getByText(/Some activity scores are unavailable/),
   ).toBeVisible();
-  await page.getByRole('tab', { name: /^Surfing/ }).click();
-  const surfing = activityGroup(page, 'Surfing');
+  await expect(page.getByRole('tab', { name: /^Surfing/ })).toHaveAttribute(
+    'aria-disabled',
+    'true',
+  );
   await expect(
-    surfing.getByText('Score unavailable', { exact: true }),
+    page.getByRole('tab', { name: 'Outdoor sightseeing', exact: true }),
+  ).toHaveAttribute('aria-selected', 'true');
+  await expect(
+    page.getByRole('group', { name: 'Forecast days' }),
   ).toBeVisible();
-  await expect(surfing.getByText('No ranked day available')).toBeVisible();
-  await expect(surfing.getByText('0/100', { exact: true })).toHaveCount(0);
   await expect(page.getByRole('tab', { name: /^Skiing/ })).toHaveAttribute(
     'aria-disabled',
     'true',
